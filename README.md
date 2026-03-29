@@ -1,36 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Atelier
 
-## Getting Started
+Atelier is a Bulgarian-language marketplace prototype for matching clients with verified creative professionals. The product combines AI-assisted intake, offer comparison, project workspaces, and Stripe-backed payments on top of a Next.js application.
 
-First, run the development server:
+## Stack
+
+- `Next.js 16` App Router
+- `React 19`
+- `Prisma` with PostgreSQL
+- `Supabase` for auth and realtime
+- `Stripe Checkout`
+- `Tailwind CSS 4`
+
+## Local Setup
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Copy the environment template and fill in the required values:
+
+```bash
+cp .env.example .env.local
+```
+
+3. Validate and generate Prisma artifacts:
+
+```bash
+npm run db:validate
+npm run db:generate
+```
+
+4. Push the schema and optionally seed demo data:
+
+```bash
+npm run db:push
+npm run db:seed
+```
+
+5. Start the app:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The required variables are documented in `.env.example`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Core runtime values:
 
-## Learn More
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `DATABASE_URL`
+- `DIRECT_URL`
+- `STRIPE_SECRET_KEY`
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
+- `STRIPE_WEBHOOK_SECRET`
+- `NEXT_PUBLIC_APP_URL`
 
-To learn more about Next.js, take a look at the following resources:
+Optional services:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `REDIS_URL`
+- `OPENAI_API_KEY`
+- `ANTHROPIC_API_KEY`
+- `GOOGLE_AI_API_KEY`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Payments
 
-## Deploy on Vercel
+The checkout flow uses Stripe Checkout Sessions and persists payment state in Prisma.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Create sessions with `POST /api/payments/create-session`
+- Receive Stripe events at `POST /api/payments/webhook`
+- Read payment state from `GET /api/payments/[id]`
+- Download receipts from `GET /api/payments/[id]/receipt`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Local webhook forwarding:
+
+```bash
+stripe listen --forward-to localhost:3000/api/payments/webhook
+```
+
+Copy the returned signing secret into `STRIPE_WEBHOOK_SECRET`.
+
+## Database Notes
+
+- Prisma schema: `prisma/schema.prisma`
+- Seed data: `prisma/seed.ts`
+- Supabase bootstrap SQL: `supabase/setup.sql`
+
+The schema includes users, requests, offers, projects, milestones, messages, attachments, payments, and reviews.
+
+## Deployment
+
+Preview deployments are the safest default.
+
+Before deploying to Vercel, add the production equivalents of the local environment variables:
+
+- Supabase URL and keys
+- Postgres connection strings
+- Stripe secret, publishable, and webhook secrets
+- `NEXT_PUBLIC_APP_URL` pointing to the deployed URL
+
+Recommended pre-deploy checks:
+
+```bash
+npm run lint
+npm run build
+```
+
+If the Prisma schema changes, apply the corresponding migration before or during release.
+
+## Verification
+
+Current local verification commands:
+
+```bash
+npm run lint
+npm run build
+```

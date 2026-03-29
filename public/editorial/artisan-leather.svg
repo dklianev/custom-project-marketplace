@@ -1,0 +1,21 @@
+<svg width="640" height="640" viewBox="0 0 640 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="640" rx="48" fill="#FBF8F6"/>
+  <circle cx="152" cy="128" r="124" fill="#E7D6CB" opacity="0.55"/>
+  <circle cx="532" cy="120" r="96" fill="#B88467" opacity="0.2"/>
+  <circle cx="510" cy="536" r="138" fill="#E7D6CB" opacity="0.4"/>
+  <circle cx="118" cy="514" r="104" fill="#7C553F" opacity="0.14"/>
+  <rect x="36" y="36" width="568" height="568" rx="42" fill="url(#card)"/>
+  
+  <rect x="84" y="110" width="472" height="286" rx="46" fill="rgba(255,255,255,0.84)"/>
+  <rect x="160" y="170" width="270" height="170" rx="30" fill="#D9B89F" opacity="0.24"/>
+  <rect x="216" y="204" width="160" height="18" rx="9" fill="#9B715A" opacity="0.22" transform="rotate(-16 216 204)"/>
+  <rect x="206" y="264" width="180" height="20" rx="10" fill="#9B715A" opacity="0.18" transform="rotate(14 206 264)"/>
+  <circle cx="446" cy="216" r="42" fill="#9B715A" opacity="0.22"/>
+        
+  <defs>
+    <linearGradient id="card" x1="80" y1="60" x2="560" y2="604" gradientUnits="userSpaceOnUse">
+      <stop stop-color="rgba(255,255,255,0.72)"/>
+      <stop offset="1" stop-color="rgba(255,255,255,0.2)"/>
+    </linearGradient>
+  </defs>
+</svg>

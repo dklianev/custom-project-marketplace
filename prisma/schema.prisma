@@ -1,0 +1,254 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+enum Role {
+  CLIENT
+  PROFESSIONAL
+}
+
+enum RequestStatus {
+  DRAFT
+  PENDING
+  MATCHING
+  OFFERS_RECEIVED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum OfferStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
+
+enum ProjectStatus {
+  CREATED
+  REVIEW
+  DESIGN
+  APPROVAL
+  FINALIZATION
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum UrgencyLevel {
+  URGENT
+  STANDARD
+  PLANNED
+}
+
+model User {
+  id               String               @id @default(cuid())
+  supabaseId       String               @unique
+  email            String               @unique
+  name             String
+  avatarUrl        String?
+  role             Role
+  phone            String?
+  bio              String?
+  verified         Boolean              @default(false)
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+  skills           String[]             @default([])
+  experience       Int?
+  location         String?
+  rating           Float                @default(0)
+  reviewCount      Int                  @default(0)
+  monthlyPotential Float?
+  portfolioImages  String[]             @default([])
+  certificates     String[]             @default([])
+  embedding        Unsupported("vector(1536)")?
+  requests         Request[]            @relation("ClientRequests")
+  offers           Offer[]              @relation("ProfessionalOffers")
+  clientProjects   Project[]            @relation("ClientProjects")
+  proProjects      Project[]            @relation("ProfessionalProjects")
+  sentMessages     Message[]            @relation("SentMessages")
+  reviewsGiven     Review[]             @relation("ReviewsGiven")
+  reviewsReceived  Review[]             @relation("ReviewsReceived")
+  payments         Payment[]            @relation("ClientPayments")
+
+  @@index([role, verified])
+  @@index([location])
+  @@map("users")
+}
+
+model Request {
+  id               String               @id @default(cuid())
+  clientId         String
+  client           User                 @relation("ClientRequests", fields: [clientId], references: [id])
+  title            String
+  description      String
+  aiInterpretation String?
+  category         String?
+  subCategory      String?
+  status           RequestStatus        @default(DRAFT)
+  urgency          UrgencyLevel         @default(STANDARD)
+  area             String?
+  priorities       String[]             @default([])
+  specificNotes    String?
+  budget           String?
+  timeline         String?
+  location         String?
+  attachments      Attachment[]
+  offers           Offer[]
+  project          Project?
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+
+  @@index([clientId, status])
+  @@index([status, createdAt])
+  @@map("requests")
+}
+
+model Offer {
+  id              String               @id @default(cuid())
+  requestId       String
+  request         Request              @relation(fields: [requestId], references: [id])
+  professionalId  String
+  professional    User                 @relation("ProfessionalOffers", fields: [professionalId], references: [id])
+  price           Float
+  timeline        Int
+  scope           String
+  warranty        String?
+  revisions       String?
+  quote           String?
+  status          OfferStatus          @default(PENDING)
+  featured        Boolean              @default(false)
+  project         Project?
+  portfolioImages String[]             @default([])
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+
+  @@index([requestId, status])
+  @@index([professionalId, status])
+  @@map("offers")
+}
+
+model Project {
+  id             String               @id @default(cuid())
+  requestId      String               @unique
+  request        Request              @relation(fields: [requestId], references: [id])
+  offerId        String               @unique
+  offer          Offer                @relation(fields: [offerId], references: [id])
+  clientId       String
+  client         User                 @relation("ClientProjects", fields: [clientId], references: [id])
+  professionalId String
+  professional   User                 @relation("ProfessionalProjects", fields: [professionalId], references: [id])
+  title          String
+  status         ProjectStatus        @default(CREATED)
+  deadline       DateTime?
+  progress       Int                  @default(0)
+  milestones     Milestone[]
+  messages       Message[]
+  attachments    Attachment[]
+  payment        Payment?
+  review         Review?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  @@index([clientId, status])
+  @@index([professionalId, status])
+  @@map("projects")
+}
+
+model Milestone {
+  id          String               @id @default(cuid())
+  projectId   String
+  project     Project              @relation(fields: [projectId], references: [id])
+  title       String
+  order       Int
+  completed   Boolean              @default(false)
+  completedAt DateTime?
+
+  @@unique([projectId, order])
+  @@map("milestones")
+}
+
+model Message {
+  id        String               @id @default(cuid())
+  projectId String
+  project   Project              @relation(fields: [projectId], references: [id])
+  senderId  String
+  sender    User                 @relation("SentMessages", fields: [senderId], references: [id])
+  text      String
+  imageUrl  String?
+  read      Boolean              @default(false)
+  createdAt DateTime             @default(now())
+
+  @@index([projectId, createdAt])
+  @@index([senderId, read])
+  @@map("messages")
+}
+
+model Attachment {
+  id        String               @id @default(cuid())
+  requestId String?
+  request   Request?             @relation(fields: [requestId], references: [id])
+  projectId String?
+  project   Project?             @relation(fields: [projectId], references: [id])
+  fileName  String
+  fileUrl   String
+  fileSize  String?
+  fileType  String?
+  createdAt DateTime             @default(now())
+
+  @@index([requestId])
+  @@index([projectId])
+  @@map("attachments")
+}
+
+model Payment {
+  id              String               @id @default(cuid())
+  projectId       String               @unique
+  project         Project              @relation(fields: [projectId], references: [id])
+  clientId        String
+  client          User                 @relation("ClientPayments", fields: [clientId], references: [id])
+  amount          Float
+  serviceFee      Float
+  total           Float
+  currency        String               @default("BGN")
+  status          PaymentStatus        @default(PENDING)
+  method          String?
+  stripeSessionId String?              @unique
+  stripePaymentId String?
+  invoiceNumber   String?
+  paidAmount      Float                @default(0)
+  remainingAmount Float?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+
+  @@index([clientId, status])
+  @@map("payments")
+}
+
+model Review {
+  id             String               @id @default(cuid())
+  projectId      String               @unique
+  project        Project              @relation(fields: [projectId], references: [id])
+  reviewerId     String
+  reviewer       User                 @relation("ReviewsGiven", fields: [reviewerId], references: [id])
+  professionalId String
+  professional   User                 @relation("ReviewsReceived", fields: [professionalId], references: [id])
+  rating         Int
+  comment        String
+  images         String[]             @default([])
+  createdAt      DateTime             @default(now())
+
+  @@index([professionalId, createdAt])
+  @@map("reviews")
+}

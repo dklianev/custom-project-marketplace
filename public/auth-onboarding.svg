@@ -1,0 +1,41 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="800" rx="48" fill="#FBF7FD"/>
+  <rect x="38" y="38" width="1124" height="724" rx="36" fill="url(#bg)"/>
+  <rect x="98" y="110" width="480" height="580" rx="36" fill="#FFFFFF" fill-opacity="0.76"/>
+  <rect x="134" y="146" width="408" height="240" rx="28" fill="url(#panel)"/>
+  <circle cx="338" cy="266" r="76" fill="#FFFFFF" fill-opacity="0.28"/>
+  <rect x="200" y="452" width="274" height="18" rx="9" fill="#EEE7F8"/>
+  <rect x="200" y="488" width="198" height="14" rx="7" fill="#8A76A1" fill-opacity="0.18"/>
+  <rect x="200" y="520" width="248" height="14" rx="7" fill="#8A76A1" fill-opacity="0.14"/>
+  <rect x="200" y="552" width="182" height="14" rx="7" fill="#8A76A1" fill-opacity="0.14"/>
+  <rect x="640" y="130" width="462" height="196" rx="32" fill="#FFFFFF" fill-opacity="0.7"/>
+  <rect x="676" y="170" width="144" height="16" rx="8" fill="#F0E8F8"/>
+  <rect x="676" y="204" width="328" height="12" rx="6" fill="#8A76A1" fill-opacity="0.16"/>
+  <rect x="676" y="232" width="284" height="12" rx="6" fill="#8A76A1" fill-opacity="0.12"/>
+  <rect x="676" y="260" width="226" height="12" rx="6" fill="#8A76A1" fill-opacity="0.12"/>
+  <rect x="640" y="358" width="220" height="292" rx="32" fill="#FFFFFF" fill-opacity="0.78"/>
+  <rect x="884" y="358" width="218" height="292" rx="32" fill="#FFFFFF" fill-opacity="0.64"/>
+  <circle cx="750" cy="464" r="54" fill="url(#orbA)"/>
+  <rect x="698" y="548" width="104" height="14" rx="7" fill="#8A76A1" fill-opacity="0.16"/>
+  <rect x="924" y="408" width="138" height="138" rx="28" fill="url(#orbB)"/>
+  <rect x="924" y="570" width="138" height="14" rx="7" fill="#FFFFFF" fill-opacity="0.42"/>
+  <defs>
+    <linearGradient id="bg" x1="64" y1="54" x2="1118" y2="748" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF9FD"/>
+      <stop offset="0.52" stop-color="#F2ECF8"/>
+      <stop offset="1" stop-color="#E4E9FA"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="134" y1="146" x2="542" y2="386" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7B668F"/>
+      <stop offset="1" stop-color="#C0B0D6"/>
+    </linearGradient>
+    <linearGradient id="orbA" x1="696" y1="412" x2="804" y2="518" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F0D8F5"/>
+      <stop offset="1" stop-color="#C9C7F2"/>
+    </linearGradient>
+    <linearGradient id="orbB" x1="924" y1="408" x2="1062" y2="546" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6C5B86"/>
+      <stop offset="1" stop-color="#9E8FBA"/>
+    </linearGradient>
+  </defs>
+</svg>
