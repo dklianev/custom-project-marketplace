@@ -11,7 +11,7 @@ type FooterProfile = {
 };
 
 export function Footer() {
-  const [profile, setProfile] = useState<FooterProfile | null>(null);
+  const [profile, setProfile] = useState<FooterProfile | null | undefined>(undefined);
   const pathname = usePathname();
   const router = useRouter();
   const clearSession = useAuthStore((state) => state.clearSession);
@@ -118,7 +118,16 @@ export function Footer() {
               Достъп
             </h2>
             <div className="flex flex-col gap-3">
-              {profile ? (
+              {profile === undefined ? (
+                <div
+                  aria-hidden="true"
+                  className="space-y-3"
+                >
+                  <div className="h-4 w-24 rounded-full bg-white/65" />
+                  <div className="h-4 w-28 rounded-full bg-white/55" />
+                  <div className="h-4 w-20 rounded-full bg-white/45" />
+                </div>
+              ) : profile ? (
                 <>
                   <Link
                     href={dashboardHref}

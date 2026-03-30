@@ -19,7 +19,7 @@ type NavProfile = {
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [profile, setProfile] = useState<NavProfile | null>(null);
+  const [profile, setProfile] = useState<NavProfile | null | undefined>(undefined);
   const pathname = usePathname();
   const router = useRouter();
   const clearSession = useAuthStore((state) => state.clearSession);
@@ -133,7 +133,12 @@ export function Navbar() {
       </div>
 
       <div className="hidden items-center gap-4 lg:flex">
-        {profile ? (
+        {profile === undefined ? (
+          <div
+            aria-hidden="true"
+            className="h-11 w-40 rounded-full bg-white/70 shadow-[0_12px_28px_rgba(82,94,127,0.05)]"
+          />
+        ) : profile ? (
           <>
             <Link
               href={dashboardHref}
@@ -201,7 +206,12 @@ export function Navbar() {
             ))}
           </div>
 
-          {profile ? (
+          {profile === undefined ? (
+            <div
+              aria-hidden="true"
+              className="mt-4 h-12 rounded-full bg-surface-container-low"
+            />
+          ) : profile ? (
             <div className="mt-4 space-y-3">
               <Link
                 href={dashboardHref}
