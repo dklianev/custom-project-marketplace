@@ -304,7 +304,7 @@ export default function DashboardPage() {
             </EditorialPanel>
           ) : (
             <EditorialPanel className="p-8 text-center text-sm text-on-surface-variant">
-              Все още няма активни елементи в workspace-а. Създайте първата си заявка и Atelier ще поеме подредбата.
+              Все още няма активни елементи в таблото. Създайте първата си заявка и Atelier ще поеме подредбата.
             </EditorialPanel>
           )}
 

@@ -136,7 +136,7 @@ function buildPaymentSummary(payment: CheckoutPayment, draft: RequestDraft): Che
     serviceFee: payment.serviceFee,
     total: payment.total,
     currency: payment.currency,
-    scope: "Плащането покрива договорения обхват, старта на проекта и защитения workflow на Atelier.",
+    scope: "Плащането покрива договорения обхват, старта на проекта и защитения работен поток на Atelier.",
     revisions: null,
     warranty: payment.invoiceNumber ? `Фактура ${payment.invoiceNumber}` : null,
   };

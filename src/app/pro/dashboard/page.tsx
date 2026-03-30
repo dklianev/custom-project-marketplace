@@ -142,14 +142,14 @@ export default function ProDashboardPage() {
       <main className="flex-1 px-6 pb-20 pt-34 md:pt-40">
         <div className="mx-auto max-w-6xl space-y-8">
           <header className="space-y-4">
-            <SectionEyebrow>Професионален workspace</SectionEyebrow>
+            <SectionEyebrow>Професионално табло</SectionEyebrow>
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
                 <h1 className="text-[2.6rem] font-extrabold leading-[1.02] tracking-[-0.06em] md:text-[4.2rem]">
-                  Atelier Workspace
+                  Вашият ритъм в Atelier
                 </h1>
                 <p className="mt-4 max-w-3xl text-base leading-8 text-on-surface-variant md:text-lg">
-                  {getDisplayName(email)}, тук виждате новите съвпадения, отворените оферти и активните проекти в един подреден изглед.
+                  {getDisplayName(email)}, тук виждате новите съвпадения, отворените оферти и активните проекти в един подреден, спокоен изглед.
                 </p>
               </div>
               <Link
@@ -195,8 +195,8 @@ export default function ProDashboardPage() {
               <EditorialPanel className="p-5 text-sm leading-7 text-on-surface-variant">
                 <SectionEyebrow className="mb-4">Сигнал на системата</SectionEyebrow>
                 {isRealtimeActive
-                  ? "Realtime известията са активни и новите заявки се появяват веднага щом Atelier ги насочи към вас."
-                  : "Realtime връзката не е активна в момента, но последните съвпадения остават налични за преглед."}
+                  ? "Известията на живо са активни и новите заявки се появяват веднага щом Atelier ги насочи към вас."
+                  : "Връзката на живо не е активна в момента, но последните съвпадения остават налични за преглед."}
               </EditorialPanel>
             </aside>
 

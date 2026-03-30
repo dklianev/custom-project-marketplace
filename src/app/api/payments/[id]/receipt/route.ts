@@ -39,7 +39,7 @@ export async function GET(
       `Issued At: ${payment.createdAt.toISOString()}`,
       `Project: ${payment.project.title}`,
       `Client: ${payment.client.name}`,
-      `Professional: ${payment.project.professional.name}`,
+      `Професионалист: ${payment.project.professional.name}`,
       `Amount: ${payment.amount.toFixed(2)} ${payment.currency}`,
       `Service Fee: ${payment.serviceFee.toFixed(2)} ${payment.currency}`,
       `Total: ${payment.total.toFixed(2)} ${payment.currency}`,

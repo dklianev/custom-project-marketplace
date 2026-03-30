@@ -321,7 +321,7 @@ export default function ProRegisterPage() {
 
             <div className="space-y-3">
               {[
-                "Сигурността на данните е водеща. Използваме защитен преглед и криптиран workflow.",
+                "Сигурността на данните е водеща. Използваме защитен преглед и криптиран работен поток.",
                 "Базовата проверка прави профила по-убедителен за клиентите още от първата заявка.",
               ].map((item) => (
                 <div key={item} className="rounded-[1.6rem] bg-white/82 px-5 py-5 text-sm leading-7 text-on-surface-variant shadow-[0_18px_48px_rgba(77,66,96,0.06)] backdrop-blur-xl">
