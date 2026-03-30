@@ -1,12 +1,12 @@
-import { requireAuth } from "@/lib/auth";
+import { getAuthContext, requireAuth } from "@/lib/auth";
 import { AppError, handleRouteError, ok, parseRequestBody } from "@/lib/http";
 import { prisma } from "@/lib/prisma";
 import { updateProfileSchema } from "@/lib/validations/auth";
 
 export async function GET() {
   try {
-    const auth = await requireAuth();
-    return ok({ user: auth.profile });
+    const auth = await getAuthContext();
+    return ok({ user: auth?.profile ?? null });
   } catch (error) {
     return handleRouteError(error);
   }
