@@ -170,34 +170,43 @@ export default function Home() {
         </section>
 
         <section id="how-it-works" className="mx-auto mt-24 w-full max-w-7xl px-6">
-          <div className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
-            <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-6 xl:grid-cols-[minmax(0,0.84fr)_minmax(0,1.16fr)] xl:items-stretch">
+            <div className="grid gap-5 sm:grid-cols-2 xl:auto-rows-fr">
               {whyCards.map((item) => (
-                <EditorialPanel key={item.title} className="p-6 md:p-7">
-                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-primary-fixed text-primary shadow-[0_10px_24px_rgba(85,62,96,0.08)]">
+                <EditorialPanel
+                  key={item.title}
+                  className="flex h-full flex-col rounded-[2.2rem] bg-white/84 p-6 shadow-[0_20px_48px_rgba(77,66,96,0.06)] backdrop-blur-md md:p-7"
+                >
+                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-primary-fixed text-primary shadow-[0_10px_24px_rgba(85,62,96,0.08)]">
                     <span aria-hidden="true" className="material-symbols-outlined text-[22px]">
                       {item.icon}
                     </span>
                   </div>
                   <h3 className="text-lg font-extrabold tracking-tight text-on-surface">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-on-surface-variant">{item.body}</p>
+                  <p className="mt-3 max-w-[24rem] text-sm leading-7 text-on-surface-variant">{item.body}</p>
                 </EditorialPanel>
               ))}
             </div>
 
-            <div className="rounded-[2.5rem] bg-surface-container-low px-7 py-8 shadow-[0_30px_90px_rgba(77,66,96,0.06)] md:px-10 md:py-10">
-              <SectionEyebrow className="mb-5">Защо да изберете Atelier?</SectionEyebrow>
-              <h2 className="max-w-xl text-3xl font-extrabold tracking-[-0.05em] text-on-surface md:text-5xl">
+            <div className="relative overflow-hidden rounded-[2.8rem] bg-[radial-gradient(circle_at_top_left,rgba(223,213,239,0.72),rgba(250,246,252,0.92)_44%,rgba(255,255,255,0.98)_100%)] px-7 py-8 shadow-[0_34px_96px_rgba(77,66,96,0.08)] md:px-10 md:py-10 xl:px-12 xl:py-12">
+              <div className="absolute -top-16 right-0 h-40 w-40 rounded-full bg-[radial-gradient(circle,rgba(140,117,189,0.18)_0%,rgba(140,117,189,0)_72%)]" />
+              <div className="absolute bottom-0 left-0 h-32 w-32 rounded-full bg-[radial-gradient(circle,rgba(214,201,235,0.22)_0%,rgba(214,201,235,0)_76%)]" />
+
+              <SectionEyebrow className="relative mb-5">Защо да изберете Atelier?</SectionEyebrow>
+              <h2 className="relative max-w-none text-3xl font-extrabold leading-[0.96] tracking-[-0.05em] text-on-surface md:text-5xl xl:max-w-[12ch]">
                 По-малко шум. Повече яснота преди решението.
               </h2>
-              <p className="mt-5 max-w-2xl text-base leading-8 text-on-surface-variant md:text-lg">
+              <p className="relative mt-5 max-w-2xl text-base leading-8 text-on-surface-variant md:text-lg">
                 Вместо директория от профили получаваш подреден процес: заявка, уточнения, съпоставени оферти,
                 доверие и следваща стъпка в една спокойна среда.
               </p>
 
-              <div className="mt-8 space-y-4">
+              <div className="relative mt-8 space-y-3">
                 {whyChecklist.map((item) => (
-                  <div key={item} className="flex items-start gap-3 rounded-[1.6rem] bg-white/78 px-4 py-4 shadow-[0_14px_34px_rgba(77,66,96,0.05)]">
+                  <div
+                    key={item}
+                    className="flex items-start gap-3 rounded-[1.6rem] border border-white/55 bg-white/80 px-4 py-4 shadow-[0_14px_34px_rgba(77,66,96,0.05)]"
+                  >
                     <span aria-hidden="true" className="material-symbols-outlined mt-0.5 text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>
                       check_circle
                     </span>
@@ -206,7 +215,7 @@ export default function Home() {
                 ))}
               </div>
 
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="relative mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
                   href="/request/create"
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-black text-on-primary shadow-[0_18px_36px_rgba(85,62,96,0.18)] transition-[transform,opacity,box-shadow] duration-200 hover:-translate-y-0.5 hover:opacity-95"
