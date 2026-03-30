@@ -6,15 +6,16 @@
   <circle cx="118" cy="514" r="104" fill="#57677E" opacity="0.14"/>
   <rect x="36" y="36" width="568" height="568" rx="42" fill="url(#card)"/>
   
-  <circle cx="320" cy="320" r="176" fill="rgba(255,255,255,0.78)"/>
+  <circle cx="320" cy="320" r="176" fill="#FFFFFF" fill-opacity="0.78"/>
   <circle cx="320" cy="286" r="72" fill="#C4D4EA" opacity="0.72"/>
   <path d="M210 474C232 392 286 356 320 356C354 356 408 392 430 474" fill="#6F87AA" opacity="0.3"/>
   <path d="M246 232C282 176 354 174 392 232" stroke="#6F87AA" stroke-width="16" stroke-linecap="round" opacity="0.42"/>
         
   <defs>
     <linearGradient id="card" x1="80" y1="60" x2="560" y2="604" gradientUnits="userSpaceOnUse">
-      <stop stop-color="rgba(255,255,255,0.72)"/>
-      <stop offset="1" stop-color="rgba(255,255,255,0.2)"/>
+      <stop stop-color="#FFFFFF" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.2"/>
     </linearGradient>
   </defs>
 </svg>
+

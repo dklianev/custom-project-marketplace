@@ -6,17 +6,18 @@
   <circle cx="118" cy="514" r="104" fill="#5C4B7A" opacity="0.14"/>
   <rect x="36" y="36" width="568" height="568" rx="42" fill="url(#card)"/>
   
-  <rect x="94" y="110" width="452" height="286" rx="46" fill="rgba(255,255,255,0.84)"/>
+  <rect x="94" y="110" width="452" height="286" rx="46" fill="#FFFFFF" fill-opacity="0.84"/>
   <rect x="138" y="150" width="364" height="190" rx="34" fill="#D8C9EC" opacity="0.32"/>
-  <rect x="188" y="392" width="264" height="20" rx="10" fill="rgba(255,255,255,0.84)"/>
+  <rect x="188" y="392" width="264" height="20" rx="10" fill="#FFFFFF" fill-opacity="0.84"/>
   <rect x="264" y="412" width="112" height="18" rx="9" fill="#7B66A6" opacity="0.24"/>
-  <rect x="170" y="184" width="192" height="102" rx="24" fill="rgba(255,255,255,0.72)"/>
+  <rect x="170" y="184" width="192" height="102" rx="24" fill="#FFFFFF" fill-opacity="0.72"/>
   <rect x="382" y="184" width="86" height="126" rx="20" fill="#7B66A6" opacity="0.18"/>
         
   <defs>
     <linearGradient id="card" x1="80" y1="60" x2="560" y2="604" gradientUnits="userSpaceOnUse">
-      <stop stop-color="rgba(255,255,255,0.72)"/>
-      <stop offset="1" stop-color="rgba(255,255,255,0.2)"/>
+      <stop stop-color="#FFFFFF" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.2"/>
     </linearGradient>
   </defs>
 </svg>
+

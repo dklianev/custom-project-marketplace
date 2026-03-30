@@ -17,23 +17,25 @@ const categories = [
     accent: "Най-търсено",
     href: "/request/create?query=%D0%A2%D1%8A%D1%80%D1%81%D1%8F%20%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%B8%D0%BE%D1%80%D0%B5%D0%BD%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%20%D0%B8%20%D1%80%D0%B5%D0%BC%D0%BE%D0%BD%D1%82",
     image: "/editorial/project-concept.svg",
-    className: "md:col-span-2 md:row-span-2",
+    className: "md:col-span-6 md:row-span-2",
   },
   {
     title: "Изработка на сайт",
     href: "/request/create?query=%D0%A2%D1%8A%D1%80%D1%81%D1%8F%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%20%D0%B8%20%D0%B8%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0%20%D0%BD%D0%B0%20%D1%83%D0%B5%D0%B1%D1%81%D0%B0%D0%B9%D1%82",
     image: "/editorial/portfolio-01.svg",
-    className: "md:col-span-2",
+    className: "sm:col-span-6 md:col-span-6",
   },
   {
     title: "Бранд и идентичност",
     href: "/request/create?query=%D0%A2%D1%8A%D1%80%D1%81%D1%8F%20%D0%B1%D1%80%D0%B0%D0%BD%D0%B4%20%D0%B8%20%D0%B2%D0%B8%D0%B7%D1%83%D0%B0%D0%BB%D0%BD%D0%B0%20%D0%B8%D0%B4%D0%B5%D0%BD%D1%82%D0%B8%D1%87%D0%BD%D0%BE%D1%81%D1%82",
     image: "/editorial/artisan-jewelry.svg",
+    className: "sm:col-span-6 md:col-span-3",
   },
   {
     title: "Поръчкова изработка",
     href: "/request/create?query=%D0%A2%D1%8A%D1%80%D1%81%D1%8F%20%D0%BF%D0%BE%D1%80%D1%8A%D1%87%D0%BA%D0%BE%D0%B2%D0%B0%20%D0%B8%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0%20%D0%B8%D0%BB%D0%B8%20%D0%BF%D1%80%D0%BE%D1%82%D0%BE%D1%82%D0%B8%D0%BF",
     image: "/editorial/artisan-ceramic.svg",
+    className: "sm:col-span-6 md:col-span-3",
   },
 ];
 
@@ -82,7 +84,7 @@ function CategoryCard({
   return (
     <Link
       href={href}
-      className={`group relative overflow-hidden rounded-[2.2rem] bg-surface-container-low shadow-[0_28px_80px_rgba(77,66,96,0.08)] ${className ?? ""}`}
+      className={`group relative isolate block min-h-[220px] overflow-hidden rounded-[2.2rem] bg-[radial-gradient(circle_at_top_left,rgba(214,201,235,0.78),rgba(248,244,251,0.92)_46%,rgba(255,255,255,0.98)_100%)] shadow-[0_28px_80px_rgba(77,66,96,0.08)] ${className ?? ""}`}
     >
       <Image
         src={image}
@@ -153,14 +155,14 @@ export default function Home() {
             </div>
             <Link
               href="/request/create"
-              className="inline-flex items-center gap-2 text-sm font-bold text-primary transition-colors hover:text-primary-container"
+              className="inline-flex items-center gap-2 self-start rounded-full bg-white/86 px-4 py-2.5 text-sm font-bold text-primary shadow-[0_14px_32px_rgba(77,66,96,0.05)] transition-colors hover:bg-white hover:text-primary-container md:self-auto"
             >
               Виж всички категории
               <span aria-hidden="true" className="material-symbols-outlined text-lg">arrow_forward</span>
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-4 md:grid-rows-2 md:auto-rows-[190px]">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-12 md:auto-rows-[210px]">
             {categories.map((category) => (
               <CategoryCard key={category.title} {...category} />
             ))}

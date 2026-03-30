@@ -6,7 +6,7 @@
   <circle cx="118" cy="514" r="104" fill="#694D6A" opacity="0.14"/>
   <rect x="36" y="36" width="568" height="568" rx="42" fill="url(#card)"/>
   
-  <rect x="84" y="110" width="472" height="286" rx="46" fill="rgba(255,255,255,0.84)"/>
+  <rect x="84" y="110" width="472" height="286" rx="46" fill="#FFFFFF" fill-opacity="0.84"/>
   <path d="M286 175C286 153 354 153 354 175C354 197 336 216 336 240V306C336 338 304 356 286 356C268 356 236 338 236 306V240C236 216 218 197 218 175C218 153 286 153 286 175Z" fill="#8E6A8B" opacity="0.28"/>
   <path d="M286 142C298 118 320 102 334 96" stroke="#8E6A8B" stroke-width="8" stroke-linecap="round"/>
   <path d="M302 132C320 114 344 110 364 118" stroke="#D3B6D2" stroke-width="8" stroke-linecap="round"/>
@@ -14,8 +14,9 @@
         
   <defs>
     <linearGradient id="card" x1="80" y1="60" x2="560" y2="604" gradientUnits="userSpaceOnUse">
-      <stop stop-color="rgba(255,255,255,0.72)"/>
-      <stop offset="1" stop-color="rgba(255,255,255,0.2)"/>
+      <stop stop-color="#FFFFFF" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.2"/>
     </linearGradient>
   </defs>
 </svg>
+

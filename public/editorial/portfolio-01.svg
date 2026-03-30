@@ -6,16 +6,17 @@
   <circle cx="118" cy="514" r="104" fill="#5F4B84" opacity="0.14"/>
   <rect x="36" y="36" width="568" height="568" rx="42" fill="url(#card)"/>
   
-  <rect x="86" y="118" width="468" height="284" rx="46" fill="rgba(255,255,255,0.82)"/>
+  <rect x="86" y="118" width="468" height="284" rx="46" fill="#FFFFFF" fill-opacity="0.82"/>
   <rect x="126" y="158" width="136" height="180" rx="26" fill="#BBA8D8" opacity="0.72"/>
-  <rect x="280" y="158" width="112" height="128" rx="24" fill="rgba(255,255,255,0.75)"/>
+  <rect x="280" y="158" width="112" height="128" rx="24" fill="#FFFFFF" fill-opacity="0.75"/>
   <rect x="408" y="158" width="106" height="180" rx="24" fill="#6D5A96" opacity="0.2"/>
   <rect x="280" y="304" width="112" height="34" rx="17" fill="#BBA8D8" opacity="0.38"/>
         
   <defs>
     <linearGradient id="card" x1="80" y1="60" x2="560" y2="604" gradientUnits="userSpaceOnUse">
-      <stop stop-color="rgba(255,255,255,0.72)"/>
-      <stop offset="1" stop-color="rgba(255,255,255,0.2)"/>
+      <stop stop-color="#FFFFFF" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.2"/>
     </linearGradient>
   </defs>
 </svg>
+
