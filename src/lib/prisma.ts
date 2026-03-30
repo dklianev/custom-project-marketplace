@@ -18,6 +18,14 @@ function createPrismaClient() {
 
   const adapter = new PrismaPg({
     connectionString: connectionUrl.toString(),
+    max: connectionUrl.hostname.includes("supabase.com") ? 1 : 10,
+    idleTimeoutMillis: connectionUrl.hostname.includes("supabase.com")
+      ? 5_000
+      : undefined,
+    connectionTimeoutMillis: connectionUrl.hostname.includes("supabase.com")
+      ? 10_000
+      : undefined,
+    allowExitOnIdle: connectionUrl.hostname.includes("supabase.com"),
     ssl:
       connectionUrl.hostname.includes("supabase.com")
         ? { rejectUnauthorized: false }
