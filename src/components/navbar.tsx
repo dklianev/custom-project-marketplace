@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useShellProfile } from "@/hooks/use-shell-profile";
 import { useAuthStore } from "@/stores/auth-store";
 import { cn } from "@/lib/utils";
 
@@ -12,57 +13,12 @@ const navLinks = [
   { label: "За професионалисти", href: "/pro/register" },
 ];
 
-type NavProfile = {
-  name: string;
-  role: "CLIENT" | "PROFESSIONAL";
-};
-
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [profile, setProfile] = useState<NavProfile | null | undefined>(undefined);
+  const profile = useShellProfile();
   const pathname = usePathname();
   const router = useRouter();
   const clearSession = useAuthStore((state) => state.clearSession);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    async function loadProfile() {
-      try {
-        const response = await fetch("/api/auth/me", {
-          method: "GET",
-          credentials: "include",
-          cache: "no-store",
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          setProfile(null);
-          return;
-        }
-
-        const payload = (await response.json()) as {
-          user?: { name?: string | null; role?: "CLIENT" | "PROFESSIONAL" };
-        };
-
-        if (!payload.user?.role) {
-          setProfile(null);
-          return;
-        }
-
-        setProfile({
-          name: payload.user.name?.trim() || "Профил",
-          role: payload.user.role,
-        });
-      } catch {
-        setProfile(null);
-      }
-    }
-
-    void loadProfile();
-
-    return () => controller.abort();
-  }, [pathname]);
 
   const isActive = (href: string) => {
     if (href.startsWith("/#")) {
@@ -96,7 +52,6 @@ export function Navbar() {
       });
     } finally {
       clearSession();
-      setProfile(null);
       setMobileOpen(false);
       router.push("/login");
       router.refresh();

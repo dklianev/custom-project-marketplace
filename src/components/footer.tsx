@@ -1,14 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useShellProfile } from "@/hooks/use-shell-profile";
 import { useAuthStore } from "@/stores/auth-store";
-
-type FooterProfile = {
-  name: string;
-  role: "CLIENT" | "PROFESSIONAL";
-};
 
 const navLinks = [
   { label: "Как работи", href: "/#how-it-works" },
@@ -23,50 +18,9 @@ const processLinks = [
 ];
 
 export function Footer() {
-  const [profile, setProfile] = useState<FooterProfile | null | undefined>(undefined);
-  const pathname = usePathname();
+  const profile = useShellProfile();
   const router = useRouter();
   const clearSession = useAuthStore((state) => state.clearSession);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    async function loadProfile() {
-      try {
-        const response = await fetch("/api/auth/me", {
-          method: "GET",
-          credentials: "include",
-          cache: "no-store",
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          setProfile(null);
-          return;
-        }
-
-        const payload = (await response.json()) as {
-          user?: { name?: string | null; role?: "CLIENT" | "PROFESSIONAL" } | null;
-        };
-
-        if (!payload.user?.role) {
-          setProfile(null);
-          return;
-        }
-
-        setProfile({
-          name: payload.user.name?.trim() || "Профил",
-          role: payload.user.role,
-        });
-      } catch {
-        setProfile(null);
-      }
-    }
-
-    void loadProfile();
-
-    return () => controller.abort();
-  }, [pathname]);
 
   const dashboardHref =
     profile?.role === "PROFESSIONAL" ? "/pro/dashboard" : "/dashboard";
@@ -79,7 +33,6 @@ export function Footer() {
       });
     } finally {
       clearSession();
-      setProfile(null);
       router.push("/login");
       router.refresh();
     }

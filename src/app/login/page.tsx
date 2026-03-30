@@ -12,6 +12,7 @@ type AuthUser = {
   id: string;
   role: "CLIENT" | "PROFESSIONAL";
   email: string;
+  name?: string | null;
 };
 
 type ApiPayload = {
@@ -99,6 +100,7 @@ function LoginExperience() {
         userId: user.id,
         role: user.role,
         email: user.email,
+        name: user.name,
       });
 
       const destination =

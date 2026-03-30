@@ -12,6 +12,7 @@ type AuthUser = {
   id: string;
   role: "CLIENT" | "PROFESSIONAL";
   email: string;
+  name?: string | null;
 };
 
 type RegisterResponse = {
@@ -103,6 +104,7 @@ function RegisterExperience() {
         userId: payload.user.id,
         role: payload.user.role,
         email: payload.user.email,
+        name: payload.user.name,
       });
 
       const fallbackDestination =

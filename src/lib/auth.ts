@@ -40,26 +40,46 @@ async function ensureProfile(authUser: SupabaseUser): Promise<PrismaUser> {
     throw new AppError(400, "Липсва имейл адрес за удостоверения потребител.");
   }
 
-  return prisma.user.upsert({
+  const nextName = inferName(authUser);
+  const nextRole = normalizeRole(authUser.user_metadata?.role);
+  const nextAvatarUrl =
+    typeof authUser.user_metadata?.avatar_url === "string"
+      ? authUser.user_metadata.avatar_url
+      : null;
+
+  const existingProfile = await prisma.user.findUnique({
     where: { supabaseId: authUser.id },
-    update: {
+  });
+
+  if (!existingProfile) {
+    return prisma.user.create({
+      data: {
+        supabaseId: authUser.id,
+        email,
+        name: nextName,
+        role: nextRole,
+        avatarUrl: nextAvatarUrl ?? undefined,
+      },
+    });
+  }
+
+  const needsUpdate =
+    existingProfile.email !== email ||
+    existingProfile.name !== nextName ||
+    existingProfile.role !== nextRole ||
+    (existingProfile.avatarUrl ?? null) !== nextAvatarUrl;
+
+  if (!needsUpdate) {
+    return existingProfile;
+  }
+
+  return prisma.user.update({
+    where: { id: existingProfile.id },
+    data: {
       email,
-      name: inferName(authUser),
-      role: normalizeRole(authUser.user_metadata?.role),
-      avatarUrl:
-        typeof authUser.user_metadata?.avatar_url === "string"
-          ? authUser.user_metadata.avatar_url
-          : null,
-    },
-    create: {
-      supabaseId: authUser.id,
-      email,
-      name: inferName(authUser),
-      role: normalizeRole(authUser.user_metadata?.role),
-      avatarUrl:
-        typeof authUser.user_metadata?.avatar_url === "string"
-          ? authUser.user_metadata.avatar_url
-          : undefined,
+      name: nextName,
+      role: nextRole,
+      avatarUrl: nextAvatarUrl,
     },
   });
 }
