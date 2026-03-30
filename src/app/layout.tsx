@@ -1,11 +1,18 @@
-/* eslint-disable @next/next/no-page-custom-font */
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const manrope = Manrope({
   subsets: ["latin", "cyrillic"],
   variable: "--font-manrope",
+});
+
+const materialSymbolsOutlined = localFont({
+  src: "./fonts/material-symbols-outlined.woff2",
+  variable: "--font-material-symbols-outlined",
+  weight: "100 700",
+  display: "block",
 });
 
 export const metadata: Metadata = {
@@ -19,15 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="bg" className={manrope.variable}>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="bg" className={`${manrope.variable} ${materialSymbolsOutlined.variable}`}>
       <body className="bg-background font-body text-on-surface antialiased selection:bg-primary-fixed selection:text-on-primary-fixed-variant">
         {children}
       </body>
