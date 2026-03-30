@@ -1,13 +1,10 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { SectionEyebrow, TonalChip } from "@/components/editorial-primitives";
+import { SectionEyebrow } from "@/components/editorial-primitives";
 import {
-  budgetOptions,
-  cityOptions,
   defaultRequestDraft,
-  heroPromptSuggestions,
   timelineOptions,
   toRequestSearchParams,
 } from "@/lib/request-flow";
@@ -18,18 +15,9 @@ export default function HeroSearch() {
   const [query, setQuery] = useState(defaultRequestDraft.query);
   const [city, setCity] = useState(defaultRequestDraft.city);
   const [budget, setBudget] = useState(defaultRequestDraft.budget);
-  const [timeline, setTimeline] = useState(defaultRequestDraft.timeline);
+  const [timeline, setTimeline] = useState(defaultRequestDraft.timeline || timelineOptions[0] || "");
 
   const canContinue = query.trim().length > 24;
-
-  const summary = useMemo(
-    () => [city, budget, timeline].filter(Boolean).join(" • "),
-    [budget, city, timeline],
-  );
-  const summaryLabel = useMemo(
-    () => summary.split(String.fromCharCode(7)).join(" / "),
-    [summary],
-  );
 
   function handleContinue() {
     if (!canContinue || isPending) {
@@ -43,138 +31,97 @@ export default function HeroSearch() {
   }
 
   return (
-    <div className="w-full max-w-5xl mx-auto">
-      <div className="ethereal-edge rounded-[3rem] p-3 md:p-4 shadow-[0_42px_120px_rgba(82,94,127,0.14)]">
-        <div className="rounded-[2.6rem] bg-surface-container-lowest/88 px-5 py-6 md:px-8 md:py-8">
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-5 md:flex-row md:items-start">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-[1.6rem] bg-primary text-on-primary shadow-[0_20px_40px_rgba(85,62,96,0.22)]">
-                <span
-                  aria-hidden="true"
-                  className="material-symbols-outlined text-[30px]"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
-                  auto_awesome
-                </span>
-              </div>
+    <div className="mx-auto w-full max-w-4xl rounded-[2.7rem] bg-surface-container-lowest px-4 py-4 shadow-[0_32px_90px_rgba(85,62,96,0.1)] md:px-7 md:py-7">
+      <div className="flex flex-col gap-6">
+        <div className="rounded-[2.2rem] bg-surface-container-low px-5 py-5 md:px-6 md:py-6">
+          <div className="flex flex-wrap items-center gap-3">
+            <SectionEyebrow className="bg-white/70">AI бриф</SectionEyebrow>
+            <span className="text-sm font-medium text-on-surface-variant">
+              Опиши проекта естествено, а Atelier ще подреди детайлите в работещ бриф.
+            </span>
+          </div>
 
-              <div className="flex-1 space-y-4">
-                <div className="flex flex-wrap items-center gap-3">
-                  <SectionEyebrow>AI заявка</SectionEyebrow>
-                  <span className="text-sm text-on-surface-variant">
-                    AI ще структурира брифа и ще го изпрати към проверени професионалисти.
-                  </span>
-                </div>
-
-                <label className="block">
-                  <span className="sr-only">Опиши проекта си</span>
-                  <textarea
-                    value={query}
-                    onChange={(event) => setQuery(event.target.value)}
-                    placeholder="Опиши проекта си на нормален език. Какво искаш, къде се намира, какъв резултат очакваш?"
-                    className="min-h-[144px] w-full resize-none rounded-[2rem] border-0 bg-transparent px-1 py-1 text-2xl font-extrabold leading-[1.2] text-on-surface outline-none transition-[background-color,box-shadow] duration-200 placeholder:text-on-surface/28 focus:bg-white/55 focus:shadow-[0_0_0_2px_rgba(85,62,96,0.18)] md:min-h-[168px] md:text-[2.7rem]"
-                  />
-                </label>
-              </div>
-            </div>
-
-            <div className="soft-divider" />
-
-            <div className="grid gap-4 lg:grid-cols-[1fr_1fr_1fr_auto]">
-              <div>
-                <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-on-surface-variant/70">
-                  Град
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {cityOptions.map((option) => (
-                    <TonalChip
-                      key={option}
-                      active={city === option}
-                      onClick={() => setCity(option)}
-                    >
-                      {option}
-                    </TonalChip>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-on-surface-variant/70">
-                  Бюджет
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {budgetOptions.map((option) => (
-                    <TonalChip
-                      key={option}
-                      active={budget === option}
-                      onClick={() => setBudget(option)}
-                    >
-                      {option}
-                    </TonalChip>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-on-surface-variant/70">
-                  Срок
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {timelineOptions.map((option) => (
-                    <TonalChip
-                      key={option}
-                      active={timeline === option}
-                      onClick={() => setTimeline(option)}
-                    >
-                      {option}
-                    </TonalChip>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex items-end">
-                <button
-                  type="button"
-                  onClick={handleContinue}
-                  disabled={!canContinue || isPending}
-                  className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-primary px-7 py-4 text-base font-black text-on-primary shadow-[0_22px_40px_rgba(85,62,96,0.26)] transition-[transform,opacity,box-shadow] duration-200 hover:-translate-y-0.5 hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-55 lg:w-auto"
-                >
-                  Продължи
-                  <span aria-hidden="true" className="material-symbols-outlined text-xl">
-                    arrow_forward
-                  </span>
-                </button>
-              </div>
+          <div className="relative mt-4">
+            <textarea
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Напиши какво търсиш: например ремонт на баня в София, дизайн на сайт или поръчкова изработка..."
+              className="min-h-[148px] w-full resize-none rounded-[1.8rem] border-0 bg-transparent px-1 py-1 text-xl font-extrabold leading-[1.2] text-on-surface outline-none transition-[box-shadow,background-color] duration-200 placeholder:text-on-surface/35 focus:bg-white/45 focus:shadow-[0_0_0_2px_rgba(85,62,96,0.12)] md:min-h-[164px] md:text-[2rem]"
+            />
+            <div className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-full bg-primary/6 px-3 py-1.5 text-primary shadow-[0_8px_20px_rgba(85,62,96,0.06)]">
+              <span aria-hidden="true" className="material-symbols-outlined text-base">
+                mic
+              </span>
+              <span className="text-[11px] font-black uppercase tracking-[0.18em]">Гласово</span>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="mt-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-        <div className="flex flex-wrap items-center gap-2 text-sm text-on-surface-variant">
-          <span className="font-bold uppercase tracking-[0.18em] text-on-surface-variant/60">
-            В момента:
-          </span>
-          <span className="rounded-full bg-white/70 px-4 py-2 text-on-surface shadow-[0_12px_30px_rgba(77,66,96,0.06)]">
-            {summaryLabel}
-          </span>
+        <div className="grid gap-4 md:grid-cols-3">
+          <label className="rounded-[1.6rem] bg-surface-container-low px-4 py-4 text-left shadow-[0_10px_24px_rgba(77,66,96,0.04)]">
+            <span className="text-[10px] font-black uppercase tracking-[0.18em] text-outline">Локация</span>
+            <span className="mt-2 flex items-center gap-2">
+              <span aria-hidden="true" className="material-symbols-outlined text-primary text-xl">
+                location_on
+              </span>
+              <input
+                type="text"
+                value={city}
+                onChange={(event) => setCity(event.target.value)}
+                placeholder="Град или район"
+                className="w-full border-0 bg-transparent p-0 text-sm font-semibold text-on-surface outline-none placeholder:text-on-surface-variant/60"
+              />
+            </span>
+          </label>
+
+          <label className="rounded-[1.6rem] bg-surface-container-low px-4 py-4 text-left shadow-[0_10px_24px_rgba(77,66,96,0.04)]">
+            <span className="text-[10px] font-black uppercase tracking-[0.18em] text-outline">Бюджет</span>
+            <span className="mt-2 flex items-center gap-2">
+              <span aria-hidden="true" className="material-symbols-outlined text-primary text-xl">
+                payments
+              </span>
+              <input
+                type="text"
+                value={budget}
+                onChange={(event) => setBudget(event.target.value)}
+                placeholder="Ориентировъчно"
+                className="w-full border-0 bg-transparent p-0 text-sm font-semibold text-on-surface outline-none placeholder:text-on-surface-variant/60"
+              />
+            </span>
+          </label>
+
+          <label className="rounded-[1.6rem] bg-surface-container-low px-4 py-4 text-left shadow-[0_10px_24px_rgba(77,66,96,0.04)]">
+            <span className="text-[10px] font-black uppercase tracking-[0.18em] text-outline">Срок</span>
+            <span className="mt-2 flex items-center gap-2">
+              <span aria-hidden="true" className="material-symbols-outlined text-primary text-xl">
+                schedule
+              </span>
+              <select
+                value={timeline}
+                onChange={(event) => setTimeline(event.target.value)}
+                className="w-full appearance-none border-0 bg-transparent p-0 text-sm font-semibold text-on-surface outline-none"
+              >
+                {timelineOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </span>
+          </label>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 text-sm text-on-surface-variant">
-          <span className="font-bold uppercase tracking-[0.18em] text-on-surface-variant/60">
-            Примери:
+        <button
+          type="button"
+          onClick={handleContinue}
+          disabled={!canContinue || isPending}
+          className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-[linear-gradient(120deg,#553e60_0%,#6e5678_100%)] px-7 py-4 text-base font-black text-on-primary shadow-[0_22px_44px_rgba(85,62,96,0.2)] transition-[transform,opacity,box-shadow] duration-200 hover:-translate-y-0.5 hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-55"
+        >
+          Изпрати запитване
+          <span aria-hidden="true" className="material-symbols-outlined text-lg">
+            send
           </span>
-          {heroPromptSuggestions.map((prompt) => (
-            <button
-              key={prompt}
-              type="button"
-              onClick={() => setQuery(prompt)}
-              className="rounded-full bg-secondary-container/35 px-4 py-2 text-left font-semibold text-secondary transition-colors hover:bg-secondary-container/55"
-            >
-              {prompt}
-            </button>
-          ))}
-        </div>
+        </button>
       </div>
     </div>
   );

@@ -32,16 +32,44 @@ type ProjectPayment = {
   remainingAmount: number | null;
 };
 
+type ProjectRequest = {
+  id: string;
+  title: string;
+  description: string;
+  location: string | null;
+  budget: string | null;
+  timeline: string | null;
+  area?: string | null;
+};
+
+type ProjectAttachment = {
+  id: string;
+  fileName: string;
+  fileUrl: string;
+  fileType: string | null;
+};
+
 export type RealtimeProject = {
   id: string;
   title: string;
   status: string;
   progress: number;
+  updatedAt?: string;
+  deadline?: string | null;
   clientId: string;
   professionalId: string;
+  request: ProjectRequest;
   client: ProjectUser;
   professional: ProjectUser;
+  offer?: {
+    id: string;
+    price: number;
+    timeline: number;
+    scope: string;
+    quote?: string | null;
+  } | null;
   milestones: ProjectMilestone[];
+  attachments: ProjectAttachment[];
   payment: ProjectPayment | null;
 };
 

@@ -4,7 +4,7 @@ import { type ChangeEvent, type FormEvent, useEffect, useRef, useState } from "r
 import Image from "next/image";
 import Link from "next/link";
 import { Footer } from "@/components/footer";
-import { EditorialPanel, SectionEyebrow } from "@/components/editorial-primitives";
+import { SectionEyebrow } from "@/components/editorial-primitives";
 import { Navbar } from "@/components/navbar";
 import { MAX_IMAGE_UPLOAD_BYTES, formatBytes, STORAGE_BUCKETS } from "@/lib/storage";
 import { uploadFileWithPresign } from "@/lib/uploads/client";
@@ -258,63 +258,55 @@ export function ReviewSubmission({
     <div className="flex min-h-screen flex-col bg-surface text-on-surface">
       <Navbar />
 
-      <main className="flex-1 px-6 pb-20 pt-34 md:pt-40">
-        <div className="mx-auto max-w-6xl space-y-8">
-          <div className="grid gap-6 lg:grid-cols-[1.08fr_0.92fr]">
-            <EditorialPanel className="p-6 md:p-8">
-              <SectionEyebrow className="mb-4">След финала</SectionEyebrow>
-              <h1 className="text-[2.4rem] font-extrabold leading-[1.02] tracking-[-0.06em] md:text-[4.2rem]">
-                Остави спокойно и полезно ревю за работата по проекта.
-              </h1>
-              <p className="mt-5 max-w-3xl text-base leading-8 text-on-surface-variant md:text-lg">
-                Ревюто е част от доверието в Atelier. То помага на следващите клиенти,
-                а на професионалиста да покаже как протича реалната работа по проекта.
-              </p>
-            </EditorialPanel>
-
-            <EditorialPanel className="p-6 md:p-8">
-              <SectionEyebrow className="mb-4">Защо е важно</SectionEyebrow>
-              <div className="space-y-4 rounded-[1.8rem] bg-surface-container-low px-5 py-5 text-sm leading-7 text-on-surface-variant">
-                <p>
-                  Ако проектът е приключил успешно, краткото ревю прави профила по-надежден.
-                  Ако е имало проблем, опиши го ясно - така екипът ни ще има по-добър контекст.
-                </p>
-                <a
-                  className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 font-semibold text-on-surface shadow-[0_12px_24px_rgba(77,66,96,0.06)]"
-                  href="mailto:support@atelier.bg"
-                >
-                  Свържи се с екипа
-                  <span aria-hidden="true" className="material-symbols-outlined text-lg">north_east</span>
-                </a>
-              </div>
-            </EditorialPanel>
+      <main className="flex-1 px-6 pb-20 pt-28 md:pt-36">
+        <div className="mx-auto max-w-4xl">
+          <div className="text-center">
+            <SectionEyebrow className="mb-5">Завършен проект</SectionEyebrow>
+            <h1 className="text-[2.7rem] font-extrabold leading-[1.05] tracking-[-0.06em] text-on-surface md:text-[4.2rem]">
+              Вашето мнение е ценно.
+            </h1>
+            <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-on-surface-variant md:text-lg">
+              Споделената оценка с професионалиста и писмените впечатления помагат на следващите клиенти да вземат по-уверено решение.
+            </p>
           </div>
 
           {error ? (
-            <EditorialPanel className="p-5 text-sm text-error" role="alert" aria-live="polite">
+            <div className="mx-auto mt-8 max-w-3xl rounded-[1.6rem] bg-rose-100/80 px-5 py-4 text-sm font-medium text-rose-700" role="alert" aria-live="polite">
               {error}
-            </EditorialPanel>
+            </div>
           ) : null}
 
           {!project ? (
-            <EditorialPanel className="p-8 text-center text-sm text-on-surface-variant">
-              Не открихме проект, за който да оставиш ревю.
-            </EditorialPanel>
-          ) : submittedReview ? (
-            <EditorialPanel className="p-8 md:p-10" role="status" aria-live="polite">
-              <SectionEyebrow className="mb-4">Ревюто е публикувано</SectionEyebrow>
-              <h2 className="text-4xl font-extrabold tracking-[-0.05em] text-on-surface">Благодарим за обратната връзка.</h2>
-              <p className="mt-4 max-w-3xl text-base leading-8 text-on-surface-variant">
-                Ревюто за {project.professional.name} по проекта „{project.title}“ вече е част от профила и ще помага на следващите клиенти да вземат решение.
+            <div className="mx-auto mt-10 max-w-3xl rounded-[2rem] bg-white/82 px-8 py-10 text-center shadow-[0_30px_90px_rgba(77,66,96,0.08)] backdrop-blur-xl">
+              <p className="text-sm leading-7 text-on-surface-variant">
+                Не открихме проект, за който да оставиш ревю.
               </p>
-              <div className="mt-8 rounded-[2rem] bg-surface-container-low px-6 py-6">
+            </div>
+          ) : submittedReview ? (
+            <div className="mx-auto mt-10 max-w-3xl rounded-[2.2rem] bg-white/84 px-8 py-10 text-center shadow-[0_32px_90px_rgba(77,66,96,0.08)] backdrop-blur-xl" role="status" aria-live="polite">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <span
+                  aria-hidden="true"
+                  className="material-symbols-outlined"
+                  style={{ fontVariationSettings: "'FILL' 1" }}
+                >
+                  check
+                </span>
+              </div>
+              <h2 className="mt-6 text-3xl font-extrabold tracking-tight text-on-surface">
+                Ревюто е публикувано.
+              </h2>
+              <p className="mt-4 text-sm leading-7 text-on-surface-variant">
+                Благодарим за обратната връзка за {project.professional.name}. Тя вече е част от профила и ще помага на следващите клиенти.
+              </p>
+              <div className="mt-8 rounded-[1.8rem] bg-surface-container-low px-6 py-6 text-left">
                 <p className="text-sm font-semibold text-on-surface">Оценка: {submittedReview.rating} / 5</p>
                 <p className="mt-3 text-sm leading-7 text-on-surface-variant">{submittedReview.comment}</p>
                 <p className="mt-4 text-xs font-bold uppercase tracking-[0.18em] text-on-surface-variant/60">
                   Публикувано на {formatLongDate(submittedReview.createdAt)}
                 </p>
               </div>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
                 <Link href="/dashboard" className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-4 text-sm font-black text-on-primary shadow-[0_18px_34px_rgba(85,62,96,0.2)] transition-opacity hover:opacity-95">
                   Към таблото
                 </Link>
@@ -322,154 +314,139 @@ export function ReviewSubmission({
                   Отвори проекта
                 </Link>
               </div>
-            </EditorialPanel>
+            </div>
           ) : (
-            <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-              <EditorialPanel className="p-6 md:p-8">
-                <SectionEyebrow className="mb-4">Контекст на проекта</SectionEyebrow>
-                <div className="space-y-5">
-                  <div className="rounded-[1.9rem] bg-surface-container-low px-5 py-5">
-                    <p className="text-[11px] font-black uppercase tracking-[0.18em] text-primary/70">Приключил проект</p>
-                    <h2 className="mt-3 text-3xl font-extrabold tracking-[-0.05em] text-on-surface">{project.title}</h2>
-                    <p className="mt-3 text-sm leading-7 text-on-surface-variant">{project.request.description}</p>
-                  </div>
-
-                  <div className="grid gap-3 sm:grid-cols-3">
-                    {[
-                      project.request.location ?? "Локация по заявката",
-                      project.request.budget ?? "Бюджет по уговорка",
-                      formatLongDate(project.updatedAt),
-                    ].map((item, index) => (
-                      <div key={`${item}-${index}`} className="rounded-[1.5rem] bg-surface-container-low px-4 py-4 text-sm leading-7 text-on-surface-variant">
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="rounded-[2rem] bg-[linear-gradient(180deg,rgba(110,86,120,0.13),rgba(110,86,120,0.05))] px-5 py-5">
-                    <div className="flex items-center gap-4">
-                      {project.professional.avatarUrl ? (
-                        <Image
-                          src={project.professional.avatarUrl}
-                          alt={project.professional.name}
-                          width={72}
-                          height={72}
-                          sizes="72px"
-                          className="h-18 w-18 rounded-full object-cover"
-                        />
-                      ) : (
-                        <div className="flex h-18 w-18 items-center justify-center rounded-full bg-white text-primary shadow-[0_14px_24px_rgba(77,66,96,0.08)]">
-                          <span aria-hidden="true" className="material-symbols-outlined text-[30px]" style={{ fontVariationSettings: "'FILL' 1" }}>
-                            verified
-                          </span>
-                        </div>
-                      )}
-                      <div>
-                        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">Професионалист</p>
-                        <h3 className="mt-2 text-2xl font-extrabold tracking-tight text-on-surface">{project.professional.name}</h3>
-                        <p className="mt-2 text-sm leading-7 text-on-surface-variant">
-                          {project.professional.location ?? "Локация по заявката"}
-                          {project.professional.verified ? " • проверен профил" : ""}
-                        </p>
-                        <p className="mt-2 text-sm leading-7 text-on-surface-variant">
-                          {project.professional.rating.toFixed(1)} рейтинг • {project.professional.reviewCount} ревюта
-                        </p>
-                      </div>
+            <form onSubmit={handleSubmit} className="mx-auto mt-10 max-w-3xl space-y-8">
+              <div className="rounded-[1.9rem] bg-white/80 px-5 py-4 shadow-[0_18px_50px_rgba(77,66,96,0.06)] backdrop-blur-xl">
+                <div className="flex items-center gap-4">
+                  {project.professional.avatarUrl ? (
+                    <Image
+                      src={project.professional.avatarUrl}
+                      alt={project.professional.name}
+                      width={52}
+                      height={52}
+                      sizes="52px"
+                      className="h-13 w-13 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-13 w-13 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <span aria-hidden="true" className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>
+                        verified
+                      </span>
                     </div>
+                  )}
+                  <div>
+                    <p className="text-sm font-bold text-on-surface">{project.professional.name}</p>
+                    <p className="text-xs uppercase tracking-[0.16em] text-on-surface-variant/70">
+                      {project.request.title}
+                    </p>
                   </div>
                 </div>
-              </EditorialPanel>
+              </div>
 
-              <EditorialPanel className="p-6 md:p-8">
-                <SectionEyebrow className="mb-4">Твоето ревю</SectionEyebrow>
-                <form onSubmit={handleSubmit} className="space-y-8">
-                  <div className="rounded-[1.9rem] bg-surface-container-low px-5 py-6 text-center">
-                    <p className="text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">Оценка</p>
-                    <div className="mt-5 flex items-center justify-center gap-1" onMouseLeave={() => setHoveredRating(0)}>
-                      {[1, 2, 3, 4, 5].map((value) => (
-                        <StarButton
-                          key={value}
-                          value={value}
-                          active={activeRating >= value}
-                          onSelect={setRating}
-                          onHover={setHoveredRating}
-                        />
-                      ))}
-                    </div>
-                    <p className="mt-3 text-sm font-semibold text-on-surface-variant">{ratingLabel[activeRating] ?? ""}</p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <label htmlFor="review-comment" className="text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
-                      Как мина работата
-                    </label>
-                    <textarea
-                      id="review-comment"
-                      value={comment}
-                      onChange={(event) => setComment(event.target.value)}
-                      placeholder="Опиши комуникацията, качеството и какво би било полезно за следващ клиент да знае."
-                      className="min-h-[240px] w-full rounded-[2rem] border-none bg-surface-container-low px-6 py-6 text-base leading-8 text-on-surface shadow-[inset_0_-1px_0_rgba(124,117,125,0.22)] outline-none transition-[background-color,box-shadow] duration-200 placeholder:text-on-surface-variant/45 focus:bg-white focus:shadow-[inset_0_-2px_0_var(--color-primary),0_18px_36px_rgba(77,66,96,0.08)]"
+              <div className="rounded-[2.2rem] bg-white/88 px-6 py-8 text-center shadow-[0_32px_90px_rgba(77,66,96,0.08)] backdrop-blur-xl md:px-8">
+                <p className="text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
+                  Как оценявате работата?
+                </p>
+                <div className="mt-5 flex items-center justify-center gap-1" onMouseLeave={() => setHoveredRating(0)}>
+                  {[1, 2, 3, 4, 5].map((value) => (
+                    <StarButton
+                      key={value}
+                      value={value}
+                      active={activeRating >= value}
+                      onSelect={setRating}
+                      onHover={setHoveredRating}
                     />
-                    <p className="text-xs text-on-surface-variant/70">Минимум 20 символа. Ясното ревю помага повече от общата похвала.</p>
-                  </div>
+                  ))}
+                </div>
+                <p className="mt-3 text-sm font-semibold text-on-surface-variant">
+                  {ratingLabel[activeRating] ?? ""}
+                </p>
+              </div>
 
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between gap-4">
-                      <label htmlFor="review-photos" className="text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
-                        Снимки от резултата
-                      </label>
-                      <span className="text-xs text-on-surface-variant/70">До 5 изображения • {formatBytes(MAX_IMAGE_UPLOAD_BYTES)} максимум</span>
-                    </div>
-                    <label htmlFor="review-photos" className="flex min-h-[140px] cursor-pointer items-center justify-center rounded-[2rem] border border-dashed border-outline/30 bg-surface-container-low px-6 py-8 text-center transition-[background-color,border-color] duration-200 hover:border-primary/35 hover:bg-white">
-                      <div className="space-y-3">
-                        <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white text-primary shadow-[0_12px_24px_rgba(77,66,96,0.08)]">
-                          <span aria-hidden="true" className="material-symbols-outlined">add_a_photo</span>
-                        </span>
-                        <p className="text-sm font-semibold text-on-surface">Качи снимки на финалния резултат</p>
-                        <p className="text-sm leading-7 text-on-surface-variant">Използвай ги, ако искаш бъдещите клиенти да видят как се е развил проектът.</p>
-                      </div>
-                    </label>
-                    <input id="review-photos" type="file" accept="image/*" multiple className="hidden" onChange={handleFiles} />
+              <div className="rounded-[2.2rem] bg-white/88 px-6 py-8 shadow-[0_32px_90px_rgba(77,66,96,0.08)] backdrop-blur-xl md:px-8">
+                <div className="flex items-center justify-between gap-4">
+                  <label htmlFor="review-comment" className="text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
+                    Вашият коментар
+                  </label>
+                  <span className="text-xs text-on-surface-variant/60">Минимум 20 символа</span>
+                </div>
+                <textarea
+                  id="review-comment"
+                  value={comment}
+                  onChange={(event) => setComment(event.target.value)}
+                  placeholder="Споделете как мина процесът, комуникацията и крайният резултат."
+                  className="mt-4 min-h-[220px] w-full rounded-[1.8rem] border-none bg-surface-container-low px-6 py-6 text-base leading-8 text-on-surface shadow-[inset_0_-1px_0_rgba(124,117,125,0.22)] outline-none transition-[background-color,box-shadow] duration-200 placeholder:text-on-surface-variant/45 focus:bg-white focus:shadow-[inset_0_-2px_0_var(--color-primary),0_18px_36px_rgba(77,66,96,0.08)]"
+                />
+              </div>
 
-                    {uploads.length > 0 && (
-                      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                        {uploads.map((item) => (
-                          <div key={item.id} className="relative overflow-hidden rounded-[1.8rem] bg-surface-container-low">
-                            <Image src={item.previewUrl} alt={item.file.name} width={480} height={360} className="aspect-[4/3] w-full object-cover" />
-                            <button
-                              type="button"
-                              onClick={() => removeUpload(item.id)}
-                              className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-on-surface shadow-[0_12px_24px_rgba(77,66,96,0.08)]"
-                              aria-label={`Премахни ${item.file.name}`}
-                            >
-                              <span aria-hidden="true" className="material-symbols-outlined text-[18px]">close</span>
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+              <div className="flex items-center justify-between gap-4 px-1">
+                <label htmlFor="review-photos" className="text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
+                  Снимки на проекта
+                </label>
+                <span className="text-xs text-on-surface-variant/60">До 5 изображения • {formatBytes(MAX_IMAGE_UPLOAD_BYTES)}</span>
+              </div>
 
-                  <div className="rounded-[1.8rem] bg-surface-container-low px-5 py-5 text-sm leading-7 text-on-surface-variant">
-                    Ревюто е публично. Ако има по-сериозен проблем, можеш да го опишеш ясно и да се свържеш с екипа ни отделно.
-                  </div>
+              <div className="grid gap-4 sm:grid-cols-3">
+                <label htmlFor="review-photos" className="flex aspect-square cursor-pointer flex-col items-center justify-center rounded-[1.9rem] bg-white/84 px-5 py-5 text-center shadow-[0_18px_50px_rgba(77,66,96,0.06)] backdrop-blur-xl transition-opacity hover:opacity-95">
+                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <span aria-hidden="true" className="material-symbols-outlined">add_a_photo</span>
+                  </span>
+                  <p className="mt-4 text-sm font-semibold text-on-surface">Качете снимка</p>
+                </label>
 
-                  <div className="flex flex-col gap-3 sm:flex-row">
+                {uploads.slice(0, 2).map((item) => (
+                  <div key={item.id} className="relative overflow-hidden rounded-[1.9rem] bg-white/84 shadow-[0_18px_50px_rgba(77,66,96,0.06)] backdrop-blur-xl">
+                    <Image src={item.previewUrl} alt={item.file.name} width={480} height={480} className="aspect-square w-full object-cover" />
                     <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-4 text-sm font-black text-on-primary shadow-[0_18px_34px_rgba(85,62,96,0.2)] transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-70"
+                      type="button"
+                      onClick={() => removeUpload(item.id)}
+                      className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/92 text-on-surface shadow-[0_12px_24px_rgba(77,66,96,0.08)]"
+                      aria-label={`Премахни ${item.file.name}`}
                     >
-                      {isSubmitting ? "Публикуваме ревюто..." : "Публикувай ревю"}
-                      <span aria-hidden="true" className="material-symbols-outlined text-lg">arrow_forward</span>
+                      <span aria-hidden="true" className="material-symbols-outlined text-[18px]">close</span>
                     </button>
-                    <Link href={`/project/${project.id}`} className="inline-flex items-center justify-center rounded-full bg-surface-container-low px-6 py-4 text-sm font-bold text-on-surface transition-colors hover:bg-white">
-                      Назад към проекта
-                    </Link>
                   </div>
-                </form>
-              </EditorialPanel>
-            </div>
+                ))}
+              </div>
+              <input id="review-photos" type="file" accept="image/*" multiple className="hidden" onChange={handleFiles} />
+
+              {uploads.length > 2 ? (
+                <div className="grid gap-4 sm:grid-cols-3">
+                  {uploads.slice(2).map((item) => (
+                    <div key={item.id} className="relative overflow-hidden rounded-[1.9rem] bg-white/84 shadow-[0_18px_50px_rgba(77,66,96,0.06)] backdrop-blur-xl">
+                      <Image src={item.previewUrl} alt={item.file.name} width={480} height={360} className="aspect-[4/3] w-full object-cover" />
+                      <button
+                        type="button"
+                        onClick={() => removeUpload(item.id)}
+                        className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/92 text-on-surface shadow-[0_12px_24px_rgba(77,66,96,0.08)]"
+                        aria-label={`Премахни ${item.file.name}`}
+                      >
+                        <span aria-hidden="true" className="material-symbols-outlined text-[18px]">close</span>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+
+              <div className="flex items-center justify-between gap-4 px-1 text-xs text-on-surface-variant/70">
+                <span>Или сигнализирайте</span>
+                <a href="mailto:support@atelier.bg" className="font-semibold text-primary transition-opacity hover:opacity-80">
+                  support@atelier.bg
+                </a>
+              </div>
+
+              <div className="flex justify-center pt-2">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 text-sm font-black text-on-primary shadow-[0_18px_34px_rgba(85,62,96,0.2)] transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {isSubmitting ? "Изпращаме ревюто..." : "Изпрати ревюто"}
+                  <span aria-hidden="true" className="material-symbols-outlined text-lg">arrow_forward</span>
+                </button>
+              </div>
+            </form>
           )}
         </div>
       </main>

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, Suspense, useEffect, useMemo, useState } from "react";
 import { Footer } from "@/components/footer";
-import { EditorialPanel, SectionEyebrow } from "@/components/editorial-primitives";
+import { SectionEyebrow } from "@/components/editorial-primitives";
 import { Navbar } from "@/components/navbar";
 
 type RequestResponse = {
@@ -216,7 +216,7 @@ function CreateOfferExperience() {
 
       setAiNote(
         [
-          range ? `AI range: ${range}` : null,
+          range ? `AI ориентир: ${range}` : null,
           payload.suggestion.rationale ?? null,
         ]
           .filter(Boolean)
@@ -283,29 +283,27 @@ function CreateOfferExperience() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-on-surface">
+    <div className="min-h-screen bg-surface text-on-surface">
       <Navbar />
 
-      <main className="mx-auto max-w-[1280px] px-6 pb-20 pt-32">
+      <main className="mx-auto max-w-6xl px-6 pb-20 pt-28 md:pt-36">
         <header className="text-center">
-          <SectionEyebrow className="mb-4">Съставяне на оферта</SectionEyebrow>
-          <h1 className="text-4xl font-extrabold tracking-tight text-on-surface md:text-5xl">
-            Изпрати спокойна, доверена оферта.
+          <SectionEyebrow className="mb-5">Предложение за проект</SectionEyebrow>
+          <h1 className="text-[2.7rem] font-extrabold leading-[1.05] tracking-[-0.06em] text-on-surface md:text-[4.4rem]">
+            Изготвяне на оферта: Atelier
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-on-surface-variant">
-            Тук вече работим с реална заявка, AI ориентир за цена и реално
-            изпращане към системата за оферти.
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-on-surface-variant md:text-lg">
+            Персонализирано предложение за интериорен дизайн, визуализации и премиум реализация.
           </p>
         </header>
 
         {!requestId ? (
-          <EditorialPanel className="mx-auto mt-10 max-w-3xl p-8">
-            <h2 className="text-2xl font-extrabold tracking-tight">
+          <div className="mx-auto mt-10 max-w-3xl rounded-[2rem] bg-white/82 px-8 py-10 text-center shadow-[0_30px_90px_rgba(77,66,96,0.08)] backdrop-blur-xl">
+            <h2 className="text-2xl font-extrabold tracking-tight text-on-surface">
               Липсва избрана заявка
             </h2>
             <p className="mt-4 text-sm leading-7 text-on-surface-variant">
-              Отвори създаването на оферта от подбраната заявка, за да заредим
-              правилния контекст.
+              Отвори създаването на оферта от подбраната заявка, за да заредим правилния контекст.
             </p>
             <Link
               href="/pro/dashboard"
@@ -313,15 +311,13 @@ function CreateOfferExperience() {
             >
               Към таблото за професионалиста
             </Link>
-          </EditorialPanel>
+          </div>
         ) : (
-          <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start">
-            <section className="space-y-6 lg:col-span-5 lg:sticky lg:top-32">
-              <EditorialPanel className="p-6">
+          <div className="mt-10 grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+            <section className="space-y-5">
+              <div className="rounded-[2.15rem] bg-white/84 p-5 shadow-[0_24px_70px_rgba(77,66,96,0.08)] backdrop-blur-xl">
                 {isLoading ? (
-                  <p className="text-sm leading-7 text-on-surface-variant">
-                    Зареждаме реалната заявка...
-                  </p>
+                  <p className="text-sm leading-7 text-on-surface-variant">Зареждаме реалната заявка...</p>
                 ) : requestState ? (
                   <>
                     <div className="flex items-center gap-4">
@@ -341,68 +337,37 @@ function CreateOfferExperience() {
                         )}
                       </div>
                       <div>
-                        <p className="text-base font-bold text-on-surface">
-                          {requestState.client.name}
-                        </p>
-                        <p className="text-sm text-on-surface-variant">
-                          Контекст на заявката
-                        </p>
+                        <p className="text-sm font-bold text-on-surface">{requestState.client.name}</p>
+                        <p className="text-xs uppercase tracking-[0.16em] text-on-surface-variant/60">Клиентски бриф</p>
                       </div>
                     </div>
 
-                    <h2 className="mt-6 text-2xl font-extrabold tracking-tight">
+                    <h2 className="mt-6 text-2xl font-extrabold tracking-tight text-on-surface">
                       {requestState.title}
                     </h2>
                     <p className="mt-4 text-sm leading-7 text-on-surface-variant">
                       {requestState.description}
                     </p>
 
-                    <div className="mt-6 grid grid-cols-2 gap-4">
-                      <div className="rounded-[1.5rem] bg-surface-container-low px-4 py-4">
-                        <p className="text-[11px] font-bold uppercase tracking-wider text-outline">
-                          Локация
-                        </p>
-                        <p className="mt-2 font-bold text-on-surface">
-                          {requestState.location ?? "По уточнение"}
-                        </p>
-                      </div>
-                      <div className="rounded-[1.5rem] bg-surface-container-low px-4 py-4">
-                        <p className="text-[11px] font-bold uppercase tracking-wider text-outline">
-                          Бюджет
-                        </p>
-                        <p className="mt-2 font-bold text-on-surface">
-                          {requestState.budget ?? "Не е посочен"}
-                        </p>
-                      </div>
-                      <div className="rounded-[1.5rem] bg-surface-container-low px-4 py-4">
-                        <p className="text-[11px] font-bold uppercase tracking-wider text-outline">
-                          Срок
-                        </p>
-                        <p className="mt-2 font-bold text-on-surface">
-                          {requestState.timeline ?? "По договаряне"}
-                        </p>
-                      </div>
-                      <div className="rounded-[1.5rem] bg-surface-container-low px-4 py-4">
-                        <p className="text-[11px] font-bold uppercase tracking-wider text-outline">
-                          Оферти досега
-                        </p>
-                        <p className="mt-2 font-bold text-on-surface">
-                          {requestState.offers.length}
-                        </p>
-                      </div>
+                    <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                      {[requestState.location ?? "По уточнение", requestState.budget ?? "Не е посочен", requestState.timeline ?? "По договаряне", `${requestState.offers.length} оферти досега`].map((item, index) => (
+                        <div key={`${item}-${index}`} className="rounded-[1.5rem] bg-surface-container-low px-4 py-4 text-sm leading-7 text-on-surface-variant">
+                          {item}
+                        </div>
+                      ))}
                     </div>
                   </>
                 ) : null}
-              </EditorialPanel>
+              </div>
 
-              <EditorialPanel className="p-6">
-                <div className="flex items-center justify-between gap-4">
+              <div className="rounded-[2.15rem] bg-white/84 p-5 shadow-[0_24px_70px_rgba(77,66,96,0.08)] backdrop-blur-xl">
+                <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-primary/70">
-                      AI ориентир за цена
+                    <p className="text-[11px] font-black uppercase tracking-[0.18em] text-primary/70">
+                      AI анализ на заявката
                     </p>
-                    <h3 className="mt-3 text-xl font-extrabold tracking-tight">
-                      Ползвай AI ориентир, после прецени сам.
+                    <h3 className="mt-3 text-lg font-extrabold tracking-tight text-on-surface">
+                      AI ориентир за цена и срок
                     </h3>
                   </div>
                   <button
@@ -414,23 +379,18 @@ function CreateOfferExperience() {
                     {isSuggesting ? "Мислим..." : "AI цена"}
                   </button>
                 </div>
-
                 <p className="mt-4 text-sm leading-7 text-on-surface-variant">
-                  AI сравнява обхвата, локацията и вече наличните оферти, за да ти даде
-                  ориентир за цена и срок.
+                  AI сравнява обхвата, локацията и вече наличните оферти, за да ти даде ориентир за цена и срок.
                 </p>
-
-                {aiNote ? (
-                  <div className="mt-5 rounded-[1.6rem] bg-primary/8 px-5 py-5 text-sm leading-7 text-primary">
-                    {aiNote}
-                  </div>
-                ) : null}
-              </EditorialPanel>
+                <div className="mt-5 rounded-[1.6rem] bg-surface-container-low px-5 py-5 text-sm leading-7 text-on-surface-variant">
+                  {aiNote ?? "На този етап AI ти подсказва само диапазон и аргументация. Финалната оферта остава твое професионално решение."}
+                </div>
+              </div>
 
               {attachmentCards.length > 0 ? (
-                <EditorialPanel className="p-6">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-primary/70">
-                      Прикачени файлове
+                <div className="rounded-[2.15rem] bg-white/84 p-5 shadow-[0_24px_70px_rgba(77,66,96,0.08)] backdrop-blur-xl">
+                  <p className="text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
+                    Прикачени файлове
                   </p>
                   <div className="mt-4 space-y-3">
                     {attachmentCards.map((item) => (
@@ -439,181 +399,157 @@ function CreateOfferExperience() {
                         href={item.fileUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="flex items-center justify-between rounded-[1.3rem] bg-surface-container-low px-4 py-4 text-sm text-on-surface transition-colors hover:bg-white"
+                        className="flex items-center justify-between rounded-[1.4rem] bg-surface-container-low px-4 py-4 text-sm text-on-surface transition-colors hover:bg-white"
                       >
                         <span className="font-medium">{item.fileName}</span>
-                        <span className="text-on-surface-variant">
-                          {item.fileType ?? "файл"}
-                        </span>
+                        <span className="text-on-surface-variant">{item.fileType ?? "файл"}</span>
                       </a>
                     ))}
                   </div>
-                </EditorialPanel>
+                </div>
               ) : null}
             </section>
 
-            <section className="lg:col-span-7">
-              <EditorialPanel className="p-8 lg:p-10">
-                <div className="flex flex-col gap-2">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-primary/70">
-                      Офертата ти
-                  </p>
-                  <h2 className="text-2xl font-extrabold tracking-tight">
-                    Изпрати оферта, която вдъхва доверие.
-                  </h2>
+            <section className="rounded-[2.35rem] bg-white/88 p-7 shadow-[0_32px_90px_rgba(77,66,96,0.1)] backdrop-blur-xl md:p-8">
+              <p className="text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
+                Вашето предложение
+              </p>
+              <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-on-surface">
+                Подредено предложение, което вдъхва доверие.
+              </h2>
+
+              {error ? (
+                <div className="mt-6 rounded-[1.6rem] bg-rose-100/80 px-5 py-4 text-sm font-medium text-rose-700">
+                  {error}
+                </div>
+              ) : null}
+
+              {success ? (
+                <div className="mt-6 rounded-[1.6rem] bg-primary/8 px-5 py-4 text-sm font-medium text-primary">
+                  {success}
+                </div>
+              ) : null}
+
+              <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+                <div className="grid gap-5 md:grid-cols-2">
+                  <div>
+                    <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
+                      Цена (лв.)
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      step="1"
+                      value={price}
+                      onChange={(event) => setPrice(event.target.value)}
+                      placeholder="напр. 2 400"
+                      required
+                      className="w-full rounded-t-[1.4rem] border-b-4 border-primary/25 bg-surface-container-low px-5 py-4 text-on-surface placeholder:text-on-surface-variant/50 outline-none transition-colors focus:border-primary"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
+                      Срок
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      step="1"
+                      value={timeline}
+                      onChange={(event) => setTimeline(event.target.value)}
+                      placeholder="напр. 10 работни дни"
+                      required
+                      className="w-full rounded-t-[1.4rem] border-b-4 border-primary/25 bg-surface-container-low px-5 py-4 text-on-surface placeholder:text-on-surface-variant/50 outline-none transition-colors focus:border-primary"
+                    />
+                  </div>
                 </div>
 
-                {error ? (
-                  <div className="mt-6 rounded-[1.6rem] bg-rose-100/80 px-5 py-4 text-sm font-medium text-rose-700">
-                    {error}
-                  </div>
-                ) : null}
+                <div>
+                  <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
+                    Описание и изпълнение
+                  </label>
+                  <textarea
+                    rows={6}
+                    value={scope}
+                    onChange={(event) => setScope(event.target.value)}
+                    placeholder="Опишете етапите на изпълнение..."
+                    required
+                    className="w-full resize-none rounded-[1.8rem] bg-surface-container-low px-5 py-4 text-sm leading-7 text-on-surface outline-none shadow-[inset_0_-1px_0_rgba(124,117,125,0.22)] transition-[background-color,box-shadow] duration-200 placeholder:text-on-surface-variant/50 focus:bg-white focus:shadow-[inset_0_-2px_0_var(--color-primary),0_18px_36px_rgba(77,66,96,0.08)]"
+                  />
+                </div>
 
-                {success ? (
-                  <div className="mt-6 rounded-[1.6rem] bg-primary/8 px-5 py-4 text-sm font-medium text-primary">
-                    {success}
-                  </div>
-                ) : null}
+                <div>
+                  <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
+                    Гаранция / последваща грижа
+                  </label>
+                  <input
+                    type="text"
+                    value={warranty}
+                    onChange={(event) => setWarranty(event.target.value)}
+                    placeholder="Напр. безплатни ревизии"
+                    className="w-full rounded-t-[1.4rem] border-b-4 border-primary/25 bg-surface-container-low px-5 py-4 text-on-surface placeholder:text-on-surface-variant/50 outline-none transition-colors focus:border-primary"
+                  />
+                </div>
 
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <label className="block text-sm font-bold text-on-surface">
-                        Цена (лв.)
-                      </label>
-                      <input
-                        type="number"
-                        min="1"
-                        step="1"
-                        value={price}
-                        onChange={(event) => setPrice(event.target.value)}
-                        placeholder="Напр. 3200"
-                        required
-                        className="w-full rounded-t-[1.25rem] border-b-4 border-primary/30 bg-surface-container-low px-5 py-4 text-on-surface placeholder:text-outline focus:border-primary focus:outline-none"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="block text-sm font-bold text-on-surface">
-                        Срок (дни)
-                      </label>
-                      <input
-                        type="number"
-                        min="1"
-                        step="1"
-                        value={timeline}
-                        onChange={(event) => setTimeline(event.target.value)}
-                        placeholder="Напр. 14"
-                        required
-                        className="w-full rounded-t-[1.25rem] border-b-4 border-primary/30 bg-surface-container-low px-5 py-4 text-on-surface placeholder:text-outline focus:border-primary focus:outline-none"
-                      />
-                    </div>
-                  </div>
+                <div>
+                  <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
+                    Кратка бележка
+                  </label>
+                  <textarea
+                    rows={4}
+                    value={quote}
+                    onChange={(event) => setQuote(event.target.value)}
+                    placeholder="Създаваме връзка с атмосферата на Atelier и ясно заявяваме професионалния подход."
+                    className="w-full resize-none rounded-[1.8rem] bg-surface-container-low px-5 py-4 text-sm leading-7 text-on-surface outline-none shadow-[inset_0_-1px_0_rgba(124,117,125,0.22)] transition-[background-color,box-shadow] duration-200 placeholder:text-on-surface-variant/50 focus:bg-white focus:shadow-[inset_0_-2px_0_var(--color-primary),0_18px_36px_rgba(77,66,96,0.08)]"
+                  />
+                </div>
 
-                  <div className="space-y-2">
-                    <label className="block text-sm font-bold text-on-surface">
-                      Обхват и подход
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
+                      Ревизии
                     </label>
-                    <textarea
-                      rows={6}
-                      value={scope}
-                      onChange={(event) => setScope(event.target.value)}
-                      placeholder="Опиши етапите, резултатите и как ще водиш процеса."
-                      required
-                      className="w-full resize-none rounded-t-[1.25rem] border-b-4 border-primary/30 bg-surface-container-low px-5 py-4 text-sm leading-relaxed text-on-surface placeholder:text-outline focus:border-primary focus:outline-none"
+                    <input
+                      type="text"
+                      value={revisions}
+                      onChange={(event) => setRevisions(event.target.value)}
+                      placeholder="Напр. 2 кръга ревизии"
+                      className="w-full rounded-t-[1.4rem] border-b-4 border-primary/25 bg-surface-container-low px-5 py-4 text-on-surface placeholder:text-on-surface-variant/50 outline-none transition-colors focus:border-primary"
                     />
                   </div>
-
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <label className="block text-sm font-bold text-on-surface">
-                        Ревизии
-                      </label>
-                      <input
-                        type="text"
-                        value={revisions}
-                        onChange={(event) => setRevisions(event.target.value)}
-                        placeholder="Напр. 2 кръга ревизии"
-                        className="w-full rounded-t-[1.25rem] border-b-4 border-primary/30 bg-surface-container-low px-5 py-4 text-on-surface placeholder:text-outline focus:border-primary focus:outline-none"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="block text-sm font-bold text-on-surface">
-                        Гаранция / последваща грижа
-                      </label>
-                      <input
-                        type="text"
-                        value={warranty}
-                        onChange={(event) => setWarranty(event.target.value)}
-                        placeholder="Напр. 30 дни последваща грижа"
-                        className="w-full rounded-t-[1.25rem] border-b-4 border-primary/30 bg-surface-container-low px-5 py-4 text-on-surface placeholder:text-outline focus:border-primary focus:outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="block text-sm font-bold text-on-surface">
-                      Кратка офертна бележка
-                    </label>
-                    <textarea
-                      rows={4}
-                      value={quote}
-                      onChange={(event) => setQuote(event.target.value)}
-                      placeholder="Кажи защо твоят подход е подходящ точно за тази заявка."
-                      className="w-full resize-none rounded-t-[1.25rem] border-b-4 border-primary/30 bg-surface-container-low px-5 py-4 text-sm leading-relaxed text-on-surface placeholder:text-outline focus:border-primary focus:outline-none"
+                  <label className="flex items-start gap-3 rounded-[1.8rem] bg-surface-container-low px-4 py-4 text-sm leading-7 text-on-surface-variant">
+                    <input
+                      type="checkbox"
+                      checked={featured}
+                      onChange={() => setFeatured((current) => !current)}
+                      className="mt-1 h-5 w-5 rounded border-outline-variant bg-surface-container-low text-primary"
                     />
-                  </div>
+                    Маркирай офертата като силно съвпадение, ако заявката е наистина в твоята специализация.
+                  </label>
+                </div>
 
-                  <div className="space-y-4 rounded-[1.8rem] bg-surface-container-low px-5 py-5">
-                    <label className="flex items-start gap-3">
-                      <input
-                        type="checkbox"
-                        checked={featured}
-                        onChange={() => setFeatured((current) => !current)}
-                        className="mt-1 h-5 w-5 rounded border-outline-variant bg-surface-container-low text-primary"
-                      />
-                      <span className="text-sm leading-7 text-on-surface-variant">
-                        Маркирай офертата като най-подходящ избор, ако заявката наистина
-                        съвпада с твоята специализация.
-                      </span>
-                    </label>
+                <label className="flex items-start gap-3 rounded-[1.8rem] bg-surface-container-low px-4 py-4 text-sm leading-7 text-on-surface-variant">
+                  <input
+                    type="checkbox"
+                    checked={termsAccepted}
+                    onChange={() => setTermsAccepted((current) => !current)}
+                    className="mt-1 h-5 w-5 rounded border-outline-variant bg-surface-container-low text-primary"
+                    required
+                  />
+                  Потвърждавам, че срокът, цената и обхватът са реалистични и че ще комуникирам спокойно и прозрачно през Atelier.
+                </label>
 
-                    <label className="flex items-start gap-3">
-                      <input
-                        type="checkbox"
-                        checked={termsAccepted}
-                        onChange={() => setTermsAccepted((current) => !current)}
-                        className="mt-1 h-5 w-5 rounded border-outline-variant bg-surface-container-low text-primary"
-                        required
-                      />
-                      <span className="text-sm leading-7 text-on-surface-variant">
-                        Потвърждавам, че срокът, цената и обхватът са реалистични и
-                        че ще комуникирам спокойно и прозрачно през Atelier.
-                      </span>
-                    </label>
-                  </div>
-
-                  <div className="pt-2">
-                    <button
-                      type="submit"
-                      disabled={!requestState || isSubmitting || !termsAccepted}
-                      className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-container py-4 text-base font-bold tracking-tight text-on-primary transition-[transform,opacity,box-shadow] duration-300 hover:scale-[1.01] hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-70"
-                    >
-                      <span
-                        aria-hidden="true"
-                        className="material-symbols-outlined text-xl"
-                      >
-                        send
-                      </span>
-                      {isSubmitting ? "Изпращаме офертата..." : "Изпрати офертата"}
-                    </button>
-                  </div>
-                </form>
-              </EditorialPanel>
-
-              <p className="mx-auto mt-6 max-w-md text-center text-xs leading-relaxed text-outline">
-                Цената и обхватът ти вече отиват към реалната заявка, не към
-                демонстрационен екран.
-              </p>
+                <button
+                  type="submit"
+                  disabled={!requestState || isSubmitting || !termsAccepted}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 text-sm font-black text-on-primary shadow-[0_18px_34px_rgba(85,62,96,0.2)] transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {isSubmitting ? "Изпращаме офертата..." : "Изпрати оферта"}
+                  <span aria-hidden="true" className="material-symbols-outlined text-lg">
+                    arrow_forward
+                  </span>
+                </button>
+              </form>
             </section>
           </div>
         )}
@@ -631,3 +567,4 @@ export default function CreateOfferPage() {
     </Suspense>
   );
 }
+

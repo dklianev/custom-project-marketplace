@@ -1,185 +1,225 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Footer } from "@/components/footer";
 import HeroSearch from "@/components/hero-search";
 import { EditorialPanel, SectionEyebrow } from "@/components/editorial-primitives";
 import { Navbar } from "@/components/navbar";
 
-const trustPoints = [
+const trustSignals = [
+  { icon: "verified_user", label: "Проверени профили" },
+  { icon: "encrypted", label: "Защитено плащане" },
+  { icon: "thumb_up", label: "Сравнение без напрежение" },
+];
+
+const categories = [
   {
-    icon: "verified_user",
-    title: "Проверени професионалисти",
-    description: "Всеки профил минава през проверка на идентичност, портфолио и реална репутация.",
+    title: "Интериор и ремонт",
+    accent: "Най-търсено",
+    href: "/request/create?query=%D0%A2%D1%8A%D1%80%D1%81%D1%8F%20%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%B8%D0%BE%D1%80%D0%B5%D0%BD%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%20%D0%B8%20%D1%80%D0%B5%D0%BC%D0%BE%D0%BD%D1%82",
+    image: "/editorial/project-concept.svg",
+    className: "md:col-span-2 md:row-span-2",
   },
   {
-    icon: "gpp_good",
-    title: "Плащане със защита",
-    description: "Резервациите и плащанията минават през защитен процес, а не през хаотични чатове.",
+    title: "Изработка на сайт",
+    href: "/request/create?query=%D0%A2%D1%8A%D1%80%D1%81%D1%8F%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%20%D0%B8%20%D0%B8%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0%20%D0%BD%D0%B0%20%D1%83%D0%B5%D0%B1%D1%81%D0%B0%D0%B9%D1%82",
+    image: "/editorial/portfolio-01.svg",
+    className: "md:col-span-2",
   },
   {
-    icon: "compare_arrows",
-    title: "Оферти за спокойно сравнение",
-    description: "Виждаш защо дадена оферта е добра за твоя бриф, вместо да гадаеш между шаблони.",
+    title: "Бранд и идентичност",
+    href: "/request/create?query=%D0%A2%D1%8A%D1%80%D1%81%D1%8F%20%D0%B1%D1%80%D0%B0%D0%BD%D0%B4%20%D0%B8%20%D0%B2%D0%B8%D0%B7%D1%83%D0%B0%D0%BB%D0%BD%D0%B0%20%D0%B8%D0%B4%D0%B5%D0%BD%D1%82%D0%B8%D1%87%D0%BD%D0%BE%D1%81%D1%82",
+    image: "/editorial/artisan-jewelry.svg",
   },
   {
-    icon: "inventory_2",
-    title: "Ясен процес след избора",
-    description: "Чат, статус, плащане и ревюта са подредени като доверен работен поток, а не като шумен пазар.",
+    title: "Поръчкова изработка",
+    href: "/request/create?query=%D0%A2%D1%8A%D1%80%D1%81%D1%8F%20%D0%BF%D0%BE%D1%80%D1%8A%D1%87%D0%BA%D0%BE%D0%B2%D0%B0%20%D0%B8%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0%20%D0%B8%D0%BB%D0%B8%20%D0%BF%D1%80%D0%BE%D1%82%D0%BE%D1%82%D0%B8%D0%BF",
+    image: "/editorial/artisan-ceramic.svg",
   },
 ];
 
-const miniFlow = [
+const whyCards = [
   {
-    label: "01",
-    title: "Опиши проекта си",
-    body: "Пишеш естествено. Не търсиш категория и не ровиш в директория.",
+    icon: "shield",
+    title: "Няма профили без проверка",
+    body: "Виждаш само професионалисти с реално попълнен профил, контекст и история на работа.",
   },
   {
-    label: "02",
-    title: "AI уточнява",
-    body: "Системата изчиства обхвата, бюджета и ограниченията до работеща заявка.",
+    icon: "checklist",
+    title: "AI структурира заявката",
+    body: "Получаваш ясен бриф, а не хаотичен чат с пропуснати условия.",
   },
   {
-    label: "03",
-    title: "Получаваш оферти",
-    body: "Brief-ът отива само към релевантни и проверени професионалисти.",
+    icon: "compare_arrows",
+    title: "Сравняваш спокойно",
+    body: "Цена, срок, подход и доверие са подредени на едно място преди решение.",
   },
   {
-    label: "04",
-    title: "Избираш спокойно",
-    body: "Сравняваш оферти по съвпадение, доверие, цена и процес, а не по шумни обещания.",
+    icon: "contract",
+    title: "Следва ясен процес",
+    body: "Плащане, статус, файлове и ревюта минават през една подредена среда.",
   },
 ];
+
+const whyChecklist = [
+  "Изпращаш една добре оформена заявка вместо десетки съобщения.",
+  "AI подбира точните хора според профила и контекста на проекта.",
+  "Виждаш оферти, доверие и следващи стъпки в спокоен, ясен flow.",
+];
+
+function CategoryCard({
+  title,
+  href,
+  image,
+  className,
+  accent,
+}: {
+  title: string;
+  href: string;
+  image: string;
+  className?: string;
+  accent?: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className={`group relative overflow-hidden rounded-[2.2rem] bg-surface-container-low shadow-[0_28px_80px_rgba(77,66,96,0.08)] ${className ?? ""}`}
+    >
+      <Image
+        src={image}
+        alt={title}
+        fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+      />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(29,27,29,0.02)_0%,rgba(29,27,29,0.15)_48%,rgba(29,27,29,0.82)_100%)]" />
+      <div className="absolute inset-x-0 bottom-0 p-6 md:p-7">
+        {accent ? (
+          <span className="mb-3 inline-flex rounded-full bg-white/18 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-white/90 backdrop-blur-md">
+            {accent}
+          </span>
+        ) : null}
+        <h3 className="max-w-[16rem] text-2xl font-extrabold tracking-[-0.04em] text-white md:text-[1.75rem]">
+          {title}
+        </h3>
+      </div>
+    </Link>
+  );
+}
 
 export default function Home() {
   return (
     <div className="flex min-h-full flex-col bg-surface text-on-surface">
       <Navbar />
 
-      <main className="flex-1">
-        <section className="relative overflow-hidden px-6 pb-20 pt-34 md:pb-24 md:pt-40">
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-[520px] bg-[radial-gradient(circle_at_top_left,rgba(238,207,247,0.45),transparent_48%),radial-gradient(circle_at_top_right,rgba(202,214,253,0.55),transparent_42%),radial-gradient(circle_at_center,rgba(255,255,255,0.84),transparent_70%)]" />
-          <div className="pointer-events-none absolute left-[-8%] top-24 h-[340px] w-[340px] rounded-full bg-primary-fixed/35 blur-[120px]" />
-          <div className="pointer-events-none absolute bottom-0 right-[-8%] h-[320px] w-[320px] rounded-full bg-secondary-container/40 blur-[120px]" />
+      <main className="flex-1 pt-32 pb-20 md:pt-36 md:pb-24">
+        <section className="mx-auto w-full max-w-7xl px-6 text-center">
+          <SectionEyebrow className="mb-8">AI маркетплейс за проверени професионалисти</SectionEyebrow>
+          <h1 className="mx-auto max-w-4xl text-[3rem] font-extrabold leading-[0.95] tracking-[-0.06em] text-on-surface md:text-[5.4rem]">
+            Опиши какво ти трябва.
+            <span className="block bg-[linear-gradient(120deg,#553e60_0%,#7a6484_48%,#6b86d1_100%)] bg-clip-text text-transparent">
+              Atelier ще го превърне в работещ бриф.
+            </span>
+          </h1>
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-on-surface-variant md:text-xl">
+            AI ще зададе точните уточнения, ще подреди заявката ти и ще я изпрати до професионалистите,
+            които имат най-силен контекст за проекта.
+          </p>
 
-          <div className="relative mx-auto max-w-7xl">
-            <div className="mx-auto max-w-4xl text-center">
-              <SectionEyebrow className="mb-6">Български пазар с AI насочване</SectionEyebrow>
-              <h1 className="text-[2.9rem] font-extrabold leading-[0.96] tracking-[-0.06em] text-on-surface md:text-[5.8rem]">
-                Опиши какво ти трябва.
-                <span className="block bg-[linear-gradient(120deg,#553e60_0%,#6e5678_40%,#6b86d1_100%)] bg-clip-text text-transparent">
-                  Atelier ще го превърне в работеща заявка.
-                </span>
-              </h1>
-              <p className="mx-auto mt-7 max-w-3xl text-base leading-8 text-on-surface-variant md:text-xl">
-                Това не е директория и не е общ AI асистент. Пишеш нормално, AI уточнява заявката,
-                структурира я и я изпраща само към проверени професионалисти, които могат да свършат точно тази работа.
+          <div className="mt-12 md:mt-14">
+            <HeroSearch />
+          </div>
+
+          <div className="mt-14 flex flex-wrap justify-center gap-6 md:gap-12">
+            {trustSignals.map((item) => (
+              <div key={item.label} className="flex items-center gap-3 text-sm font-bold tracking-tight text-on-surface/78 md:text-base">
+                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-surface-container-high shadow-[0_12px_30px_rgba(77,66,96,0.05)]">
+                  <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>
+                    {item.icon}
+                  </span>
+                </div>
+                <span>{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mx-auto mt-24 w-full max-w-7xl px-6">
+          <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <h2 className="text-3xl font-extrabold tracking-[-0.05em] text-on-surface md:text-5xl">Популярни категории</h2>
+              <p className="mt-3 max-w-xl text-base leading-8 text-on-surface-variant">
+                Най-честите заявки започват оттук, но всяка от тях минава през AI уточняване и реален подбор.
               </p>
             </div>
+            <Link
+              href="/request/create"
+              className="inline-flex items-center gap-2 text-sm font-bold text-primary transition-colors hover:text-primary-container"
+            >
+              Виж всички категории
+              <span aria-hidden="true" className="material-symbols-outlined text-lg">arrow_forward</span>
+            </Link>
+          </div>
 
-            <div className="mt-12 md:mt-16">
-              <HeroSearch />
-            </div>
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-4 md:grid-rows-2 md:auto-rows-[190px]">
+            {categories.map((category) => (
+              <CategoryCard key={category.title} {...category} />
+            ))}
+          </div>
+        </section>
 
-            <div className="mt-10 grid gap-4 lg:grid-cols-4">
-              {trustPoints.map((item) => (
-                <EditorialPanel key={item.title} className="p-6">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-[1.3rem] bg-primary/10 text-primary">
-                    <span aria-hidden="true" className="material-symbols-outlined text-2xl">
+        <section id="how-it-works" className="mx-auto mt-24 w-full max-w-7xl px-6">
+          <div className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
+            <div className="grid gap-4 sm:grid-cols-2">
+              {whyCards.map((item) => (
+                <EditorialPanel key={item.title} className="p-6 md:p-7">
+                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-primary-fixed text-primary shadow-[0_10px_24px_rgba(85,62,96,0.08)]">
+                    <span aria-hidden="true" className="material-symbols-outlined text-[22px]">
                       {item.icon}
                     </span>
                   </div>
-                  <h2 className="text-lg font-extrabold tracking-tight">{item.title}</h2>
-                  <p className="mt-3 text-sm leading-7 text-on-surface-variant">{item.description}</p>
+                  <h3 className="text-lg font-extrabold tracking-tight text-on-surface">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-on-surface-variant">{item.body}</p>
                 </EditorialPanel>
               ))}
             </div>
-          </div>
-        </section>
 
-        <section id="how-it-works" className="scroll-mt-32 px-6 py-18 md:py-24">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-              <div className="max-w-2xl">
-                <SectionEyebrow className="mb-4">Как работи</SectionEyebrow>
-                <h2 className="text-4xl font-extrabold tracking-[-0.05em] md:text-6xl">
-                  По-малко шум. Повече яснота.
-                </h2>
-              </div>
-              <p className="max-w-xl text-base leading-8 text-on-surface-variant md:text-lg">
-                Потокът е нарочно тих и подреден: заявка, подбор, оферти, избор, плащане и статус.
-                Няма категории, няма безкрайни grid-ове и няма нужда да убеждаваш платформата какво търсиш.
-              </p>
-            </div>
-
-            <div className="grid gap-4 lg:grid-cols-4">
-              {miniFlow.map((item) => (
-                <EditorialPanel key={item.label} className="flex h-full flex-col justify-between p-7 md:p-8">
-                  <div>
-                    <p className="text-sm font-black tracking-[0.22em] text-primary/45">{item.label}</p>
-                    <h3 className="mt-6 text-2xl font-extrabold tracking-tight">{item.title}</h3>
-                  </div>
-                  <p className="mt-8 text-sm leading-7 text-on-surface-variant">{item.body}</p>
-                </EditorialPanel>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="px-6 pb-20 md:pb-24">
-          <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-            <EditorialPanel className="overflow-hidden p-8 md:p-10">
-              <SectionEyebrow className="mb-5">Дигитален куратор</SectionEyebrow>
-              <h2 className="max-w-2xl text-3xl font-extrabold tracking-[-0.05em] md:text-5xl">
-                Atelier е за проекти, при които вкусът, доверието и ясният процес имат значение.
+            <div className="rounded-[2.5rem] bg-surface-container-low px-7 py-8 shadow-[0_30px_90px_rgba(77,66,96,0.06)] md:px-10 md:py-10">
+              <SectionEyebrow className="mb-5">Защо да изберете Atelier?</SectionEyebrow>
+              <h2 className="max-w-xl text-3xl font-extrabold tracking-[-0.05em] text-on-surface md:text-5xl">
+                По-малко шум. Повече яснота преди решението.
               </h2>
-              <p className="mt-6 max-w-2xl text-base leading-8 text-on-surface-variant md:text-lg">
-                Платформата е създадена за ремонти, авторска изработка, интериор, дигитален дизайн и други услуги,
-                където клиентът иска подбран избор, а професионалистът иска добре структурирана заявка.
+              <p className="mt-5 max-w-2xl text-base leading-8 text-on-surface-variant md:text-lg">
+                Вместо директория от профили получаваш подреден процес: заявка, уточнения, съпоставени оферти,
+                доверие и следваща стъпка в една спокойна среда.
               </p>
 
-              <div className="mt-8 grid gap-4 md:grid-cols-3">
-                {[
-                  "Започваш с едно AI поле за заявка, не с лабиринт от категории.",
-                  "Сравняваш оферти по съвпадение и сигурност, не по най-шумен профил.",
-                  "След избора оставаш в спокоен trust-first workflow.",
-                ].map((point) => (
-                  <div key={point} className="rounded-[1.7rem] bg-surface-container-low px-5 py-5 text-sm font-semibold leading-7 text-on-surface-variant">
-                    {point}
+              <div className="mt-8 space-y-4">
+                {whyChecklist.map((item) => (
+                  <div key={item} className="flex items-start gap-3 rounded-[1.6rem] bg-white/78 px-4 py-4 shadow-[0_14px_34px_rgba(77,66,96,0.05)]">
+                    <span aria-hidden="true" className="material-symbols-outlined mt-0.5 text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>
+                      check_circle
+                    </span>
+                    <p className="text-sm font-semibold leading-7 text-on-surface-variant">{item}</p>
                   </div>
                 ))}
               </div>
-            </EditorialPanel>
 
-            <EditorialPanel className="flex flex-col justify-between gap-8 p-8 md:p-10">
-              <div>
-                <SectionEyebrow className="mb-4">Следваща стъпка</SectionEyebrow>
-                <h2 className="text-3xl font-extrabold tracking-[-0.05em] md:text-4xl">
-                  Готов си да започнеш с реална заявка, не с още един шумен профил.
-                </h2>
-                <p className="mt-5 text-base leading-8 text-on-surface-variant">
-                  Влизаш в AI уточняващия поток, изчистваш обхвата за няколко спокойни стъпки и изпращаш заявката,
-                  когато усещането е точно и сигурно.
-                </p>
-              </div>
-
-              <div className="space-y-3">
+              <div className="mt-8 flex flex-wrap gap-3">
                 <Link
                   href="/request/create"
-                  className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-primary px-7 py-4 text-base font-black text-on-primary shadow-[0_22px_40px_rgba(85,62,96,0.22)] transition-[transform,opacity,box-shadow] duration-200 hover:-translate-y-0.5 hover:opacity-95"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-black text-on-primary shadow-[0_18px_36px_rgba(85,62,96,0.18)] transition-[transform,opacity,box-shadow] duration-200 hover:-translate-y-0.5 hover:opacity-95"
                 >
-                  Подай заявка
-                  <span aria-hidden="true" className="material-symbols-outlined text-xl">
-                    arrow_forward
-                  </span>
+                  Изпрати запитване
+                  <span aria-hidden="true" className="material-symbols-outlined text-lg">arrow_forward</span>
                 </Link>
                 <Link
                   href="/pro/register"
-                  className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-white/90 px-7 py-4 text-base font-bold text-on-surface shadow-[0_18px_32px_rgba(77,66,96,0.08)] transition-colors hover:bg-white"
+                  className="inline-flex items-center justify-center rounded-full bg-white/88 px-6 py-3 text-sm font-bold text-on-surface shadow-[0_12px_28px_rgba(77,66,96,0.06)] transition-colors hover:bg-white"
                 >
                   Кандидатствай като професионалист
                 </Link>
               </div>
-            </EditorialPanel>
+            </div>
           </div>
         </section>
       </main>

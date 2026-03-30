@@ -35,7 +35,7 @@ async function login(
   await page.waitForURL(`**${expectedPath}`);
 }
 
-test("authenticated customer and professional smoke", async ({ browser, request }) => {
+test("authenticated customer and professional smoke", async ({ browser }) => {
   const stamp = Date.now();
   const outputDir = join(process.cwd(), "output", "playwright");
   mkdirSync(outputDir, { recursive: true });

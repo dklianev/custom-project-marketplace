@@ -1,10 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 import { Footer } from "@/components/footer";
-import { EditorialPanel, SectionEyebrow } from "@/components/editorial-primitives";
+import { SectionEyebrow } from "@/components/editorial-primitives";
 import { Navbar } from "@/components/navbar";
 import { STORAGE_BUCKETS } from "@/lib/storage";
 import { uploadFileWithPresign } from "@/lib/uploads/client";
@@ -64,6 +65,8 @@ function normalizeSkills(value: string) {
     .map((item) => item.trim())
     .filter(Boolean);
 }
+
+const STEPS = ["Кандидат", "Досие", "Документи", "Портфолио"];
 
 export default function ProRegisterPage() {
   const router = useRouter();
@@ -283,272 +286,300 @@ export default function ProRegisterPage() {
     <div className="flex min-h-screen flex-col bg-surface text-on-surface">
       <Navbar />
 
-      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-6 pb-20 pt-34 md:pt-40">
-        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-          <section className="space-y-6">
-            <SectionEyebrow className="mb-1">Проверка на профила</SectionEyebrow>
-            <h1 className="text-4xl font-extrabold leading-tight tracking-[-0.05em] md:text-6xl">
-              Кандидатствай като
-              <span className="block text-primary">проверен професионалист.</span>
-            </h1>
-            <p className="text-base leading-8 text-on-surface-variant md:text-lg">
-              Тази стъпка прави реално обновяване на профила, качване на личен
-              документ и предварителна AI проверка.
-            </p>
-
-            <EditorialPanel className="p-6 md:p-8">
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-primary/70">
-                Какво проверяваме
-              </p>
-              <div className="mt-5 space-y-4">
-                {[
-                  "Идентификационен документ за базова проверка на четимост и формат.",
-                  "Портфолио изображения, които подсилват профила ти пред клиентите.",
-                  "Контекст за опит, локация и умения, за да получаваш по-точни съвпадения.",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="rounded-[1.6rem] bg-surface-container-low px-5 py-5 text-sm leading-7 text-on-surface-variant"
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
-
-              {verificationNote ? (
-                <div className="mt-5 rounded-[1.6rem] bg-primary/8 px-5 py-5 text-sm leading-7 text-primary">
-                  {verificationNote}
+      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-6 pb-20 pt-28 md:pt-36">
+        <div className="mb-10 flex items-center justify-center gap-4 overflow-x-auto pb-2">
+          {STEPS.map((step, index) => {
+            const active = index === 2;
+            const completed = index < 2;
+            return (
+              <div key={step} className="flex items-center gap-4">
+                <div className="flex flex-col items-center gap-2">
+                  <span className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-black ${completed ? "bg-primary text-on-primary" : active ? "border border-primary bg-white text-primary" : "bg-surface-container-low text-on-surface-variant"}`}>
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
+                    {step}
+                  </span>
                 </div>
-              ) : null}
-            </EditorialPanel>
+                {index < STEPS.length - 1 ? <span className="h-px w-12 bg-outline-variant/35" /> : null}
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="grid gap-8 lg:grid-cols-[0.86fr_1.14fr] lg:items-start">
+          <section className="space-y-6">
+            <div>
+              <SectionEyebrow className="mb-5">Регистрация на професионалист</SectionEyebrow>
+              <h1 className="text-[2.7rem] font-extrabold leading-[1.05] tracking-[-0.06em] text-primary md:text-[4.4rem]">
+                Изградете доверие още от първия поглед.
+              </h1>
+              <p className="mt-4 max-w-xl text-base leading-8 text-on-surface-variant md:text-lg">
+                За да завършите вашето досие в Atelier, качете професионални документи и подредено портфолио. Това е тихата, но важна стъпка към по-качествени съвпадения.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              {[
+                "Сигурността на данните е водеща. Използваме защитен преглед и криптиран workflow.",
+                "Базовата проверка прави профила по-убедителен за клиентите още от първата заявка.",
+              ].map((item) => (
+                <div key={item} className="rounded-[1.6rem] bg-white/82 px-5 py-5 text-sm leading-7 text-on-surface-variant shadow-[0_18px_48px_rgba(77,66,96,0.06)] backdrop-blur-xl">
+                  {item}
+                </div>
+              ))}
+            </div>
+
+            <div className="overflow-hidden rounded-[2.2rem] bg-white/82 shadow-[0_24px_70px_rgba(77,66,96,0.08)] backdrop-blur-xl">
+              <Image
+                src="/auth-onboarding.svg"
+                alt="Илюстрация за професионален onboarding"
+                width={900}
+                height={900}
+                sizes="(min-width: 1024px) 26rem, 100vw"
+                className="aspect-square h-full w-full object-cover"
+                priority
+              />
+            </div>
           </section>
 
-          <section>
-            <EditorialPanel className="p-8 md:p-10">
-              {isLoadingProfile ? (
+          <section className="rounded-[2.35rem] bg-white/88 p-7 shadow-[0_32px_90px_rgba(77,66,96,0.1)] backdrop-blur-xl md:p-8">
+            {isLoadingProfile ? (
+              <p className="text-sm leading-7 text-on-surface-variant">
+                Зареждаме професионалния профил...
+              </p>
+            ) : !profile ? (
+              <div className="space-y-5">
+                <h2 className="text-2xl font-extrabold tracking-tight">
+                  Първо създай профил за професионалист
+                </h2>
                 <p className="text-sm leading-7 text-on-surface-variant">
-                  Зареждаме професионалния профил...
+                  Страницата е публична, но качването на документите изисква активна сесия като професионалист.
                 </p>
-              ) : !profile ? (
-                <div className="space-y-5">
-                  <h2 className="text-2xl font-extrabold tracking-tight">
-                    Първо създай профил за професионалист
-                  </h2>
-                  <p className="text-sm leading-7 text-on-surface-variant">
-                    `/pro/register` е публична страница, но качването и проверката
-                    изискват активна сесия като професионалист.
-                  </p>
-                  <div className="flex flex-col gap-3 sm:flex-row">
-                    <Link
-                      href="/register?role=professional&next=/pro/register"
-                      className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-4 text-sm font-bold text-on-primary"
-                    >
-                      Създай профил за професионалист
-                    </Link>
-                    <Link
-                      href="/login?role=professional&next=/pro/register"
-                      className="inline-flex items-center justify-center rounded-full bg-surface-container-low px-6 py-4 text-sm font-bold text-on-surface"
-                    >
-                      Влез
-                    </Link>
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <Link
+                    href="/register?role=professional&next=/pro/register"
+                    className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-4 text-sm font-bold text-on-primary"
+                  >
+                    Създай профил за професионалист
+                  </Link>
+                  <Link
+                    href="/login?role=professional&next=/pro/register"
+                    className="inline-flex items-center justify-center rounded-full bg-surface-container-low px-6 py-4 text-sm font-bold text-on-surface"
+                  >
+                    Влез
+                  </Link>
+                </div>
+              </div>
+            ) : profile.role !== "PROFESSIONAL" ? (
+              <div className="space-y-4">
+                <h2 className="text-2xl font-extrabold tracking-tight">
+                  Този поток е само за професионалисти
+                </h2>
+                <p className="text-sm leading-7 text-on-surface-variant">
+                  Профилът ти в момента е клиентски.
+                </p>
+              </div>
+            ) : (
+              <form className="space-y-6" onSubmit={handleSubmit}>
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
+                      03. Проверка на самоличността
+                    </p>
+                    <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-on-surface">
+                      Довършете досието си
+                    </h2>
+                  </div>
+                  <span className="rounded-full bg-surface-container-low px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-primary/80">
+                    Верификация
+                  </span>
+                </div>
+
+                {error ? (
+                  <div className="rounded-[1.6rem] bg-rose-100/80 px-5 py-4 text-sm font-medium text-rose-700">
+                    {error}
+                  </div>
+                ) : null}
+
+                {success ? (
+                  <div className="rounded-[1.6rem] bg-primary/8 px-5 py-4 text-sm font-medium text-primary">
+                    {success}
+                  </div>
+                ) : null}
+
+                {verificationNote ? (
+                  <div className="rounded-[1.6rem] bg-surface-container-low px-5 py-4 text-sm leading-7 text-on-surface-variant">
+                    {verificationNote}
+                  </div>
+                ) : null}
+
+                <div className="grid gap-5 md:grid-cols-2">
+                  <div>
+                    <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
+                      Име
+                    </label>
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(event) => setName(event.target.value)}
+                      className="w-full rounded-t-[1.4rem] border-b-4 border-primary/25 bg-surface-container-low px-5 py-4 text-on-surface outline-none transition-colors focus:border-primary"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
+                      Телефон
+                    </label>
+                    <input
+                      type="tel"
+                      value={phone}
+                      onChange={(event) => setPhone(event.target.value)}
+                      className="w-full rounded-t-[1.4rem] border-b-4 border-primary/25 bg-surface-container-low px-5 py-4 text-on-surface outline-none transition-colors focus:border-primary"
+                      placeholder="+359..."
+                    />
                   </div>
                 </div>
-              ) : profile.role !== "PROFESSIONAL" ? (
-                <div className="space-y-4">
-                  <h2 className="text-2xl font-extrabold tracking-tight">
-                    Този поток е само за професионалисти
-                  </h2>
-                  <p className="text-sm leading-7 text-on-surface-variant">
-                    Профилът ти в момента е клиентски.
-                  </p>
+
+                <div className="grid gap-5 md:grid-cols-2">
+                  <div>
+                    <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
+                      Локация
+                    </label>
+                    <input
+                      type="text"
+                      value={location}
+                      onChange={(event) => setLocation(event.target.value)}
+                      className="w-full rounded-t-[1.4rem] border-b-4 border-primary/25 bg-surface-container-low px-5 py-4 text-on-surface outline-none transition-colors focus:border-primary"
+                      placeholder="София, Пловдив, дистанционно..."
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
+                      Опит (години)
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      max="60"
+                      value={experience}
+                      onChange={(event) => setExperience(event.target.value)}
+                      className="w-full rounded-t-[1.4rem] border-b-4 border-primary/25 bg-surface-container-low px-5 py-4 text-on-surface outline-none transition-colors focus:border-primary"
+                    />
+                  </div>
                 </div>
-              ) : (
-                <>
-                  {error ? (
-                    <div className="mb-6 rounded-[1.6rem] bg-rose-100/80 px-5 py-4 text-sm font-medium text-rose-700">
-                      {error}
-                    </div>
-                  ) : null}
 
-                  {success ? (
-                    <div className="mb-6 rounded-[1.6rem] bg-primary/8 px-5 py-4 text-sm font-medium text-primary">
-                      {success}
-                    </div>
-                  ) : null}
+                <div>
+                  <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
+                    Умения
+                  </label>
+                  <input
+                    type="text"
+                    value={skillsInput}
+                    onChange={(event) => setSkillsInput(event.target.value)}
+                    className="w-full rounded-t-[1.4rem] border-b-4 border-primary/25 bg-surface-container-low px-5 py-4 text-on-surface outline-none transition-colors focus:border-primary"
+                    placeholder="интериор, 3D, мебели по поръчка..."
+                  />
+                </div>
 
-                  <form className="space-y-6" onSubmit={handleSubmit}>
-                    <div className="grid gap-6 md:grid-cols-2">
-                      <div>
-                        <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
-                          Име
-                        </label>
-                        <input
-                          type="text"
-                          value={name}
-                          onChange={(event) => setName(event.target.value)}
-                          className="w-full rounded-t-[1.25rem] border-b-4 border-primary/30 bg-surface-container-low px-5 py-4 text-on-surface focus:border-primary focus:outline-none"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
-                          Телефон
-                        </label>
-                        <input
-                          type="tel"
-                          value={phone}
-                          onChange={(event) => setPhone(event.target.value)}
-                          className="w-full rounded-t-[1.25rem] border-b-4 border-primary/30 bg-surface-container-low px-5 py-4 text-on-surface focus:border-primary focus:outline-none"
-                          placeholder="+359..."
-                        />
-                      </div>
-                    </div>
+                <div>
+                  <label className="mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-on-surface-variant/70">
+                    Представяне
+                  </label>
+                  <textarea
+                    rows={4}
+                    value={bio}
+                    onChange={(event) => setBio(event.target.value)}
+                    className="w-full resize-none rounded-[1.8rem] bg-surface-container-low px-5 py-4 text-sm leading-7 text-on-surface outline-none shadow-[inset_0_-1px_0_rgba(124,117,125,0.22)] transition-[background-color,box-shadow] duration-200 focus:bg-white focus:shadow-[inset_0_-2px_0_var(--color-primary),0_18px_36px_rgba(77,66,96,0.08)]"
+                    placeholder="Разкажи накратко как работиш и какво те отличава."
+                  />
+                </div>
 
-                    <div className="grid gap-6 md:grid-cols-2">
-                      <div>
-                        <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
-                          Локация
-                        </label>
-                        <input
-                          type="text"
-                          value={location}
-                          onChange={(event) => setLocation(event.target.value)}
-                          className="w-full rounded-t-[1.25rem] border-b-4 border-primary/30 bg-surface-container-low px-5 py-4 text-on-surface focus:border-primary focus:outline-none"
-                          placeholder="София, Пловдив, дистанционно..."
-                        />
-                      </div>
-                      <div>
-                        <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
-                          Опит (години)
-                        </label>
-                        <input
-                          type="number"
-                          min="0"
-                          max="60"
-                          value={experience}
-                          onChange={(event) => setExperience(event.target.value)}
-                          className="w-full rounded-t-[1.25rem] border-b-4 border-primary/30 bg-surface-container-low px-5 py-4 text-on-surface focus:border-primary focus:outline-none"
-                        />
-                      </div>
-                    </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <button
+                    type="button"
+                    onClick={() => setDocType("id_card")}
+                    className={`rounded-full px-5 py-3 text-sm font-semibold transition-[background-color,color,box-shadow] duration-200 ${
+                      docType === "id_card"
+                        ? "bg-primary text-on-primary shadow-[0_18px_34px_rgba(85,62,96,0.18)]"
+                        : "bg-surface-container-low text-on-surface-variant"
+                    }`}
+                  >
+                    Лична карта
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDocType("passport")}
+                    className={`rounded-full px-5 py-3 text-sm font-semibold transition-[background-color,color,box-shadow] duration-200 ${
+                      docType === "passport"
+                        ? "bg-primary text-on-primary shadow-[0_18px_34px_rgba(85,62,96,0.18)]"
+                        : "bg-surface-container-low text-on-surface-variant"
+                    }`}
+                  >
+                    Паспорт
+                  </button>
+                </div>
 
-                    <div>
-                      <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
-                        Умения
-                      </label>
-                      <input
-                        type="text"
-                        value={skillsInput}
-                        onChange={(event) => setSkillsInput(event.target.value)}
-                        className="w-full rounded-t-[1.25rem] border-b-4 border-primary/30 bg-surface-container-low px-5 py-4 text-on-surface focus:border-primary focus:outline-none"
-                        placeholder="интериор, 3D, мебели по поръчка..."
-                      />
-                    </div>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <label className="flex min-h-[150px] cursor-pointer flex-col items-center justify-center rounded-[1.8rem] border border-dashed border-outline-variant/35 bg-surface-container-low px-5 py-6 text-center transition-[background-color,border-color] duration-200 hover:border-primary/35 hover:bg-white">
+                    <input
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp"
+                      className="sr-only"
+                      onChange={handleIdentityChange}
+                    />
+                    <span aria-hidden="true" className="material-symbols-outlined text-3xl text-primary">
+                      badge
+                    </span>
+                    <p className="mt-3 text-sm font-semibold text-on-surface">
+                      {identityFile ? identityFile.name : "Предна страна"}
+                    </p>
+                    <p className="mt-1 text-xs leading-6 text-on-surface-variant">
+                      JPG, PNG или WEBP до 10 MB
+                    </p>
+                  </label>
 
-                    <div>
-                      <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
-                        Представяне
-                      </label>
-                      <textarea
-                        rows={4}
-                        value={bio}
-                        onChange={(event) => setBio(event.target.value)}
-                        className="w-full resize-none rounded-t-[1.25rem] border-b-4 border-primary/30 bg-surface-container-low px-5 py-4 text-sm leading-7 text-on-surface focus:border-primary focus:outline-none"
-                        placeholder="Разкажи накратко как работиш и какво те отличава."
-                      />
-                    </div>
+                  <label className="flex min-h-[150px] cursor-pointer flex-col items-center justify-center rounded-[1.8rem] border border-dashed border-outline-variant/35 bg-surface-container-low px-5 py-6 text-center transition-[background-color,border-color] duration-200 hover:border-primary/35 hover:bg-white">
+                    <input
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp"
+                      multiple
+                      className="sr-only"
+                      onChange={handlePortfolioChange}
+                    />
+                    <span aria-hidden="true" className="material-symbols-outlined text-3xl text-primary">
+                      gallery_thumbnail
+                    </span>
+                    <p className="mt-3 text-sm font-semibold text-on-surface">
+                      {portfolioFiles.length > 0 ? `${portfolioFiles.length} файла избрани` : "Качи портфолио"}
+                    </p>
+                    <p className="mt-1 text-xs leading-6 text-on-surface-variant">
+                      До 4 изображения за публичния профил
+                    </p>
+                  </label>
+                </div>
 
-                    <div className="space-y-3 rounded-[1.8rem] bg-surface-container-low px-5 py-5">
-                      <div className="flex items-center justify-between gap-4">
-                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">
-                          01. Документ за верификация
-                        </label>
-                        <select
-                          value={docType}
-                          onChange={(event) =>
-                            setDocType(event.target.value as "id_card" | "passport")
-                          }
-                          className="rounded-full bg-white px-3 py-2 text-xs font-bold text-on-surface outline-none"
-                        >
-                          <option value="id_card">Лична карта</option>
-                          <option value="passport">Паспорт</option>
-                        </select>
-                      </div>
+                <div className="rounded-[1.8rem] bg-surface-container-low px-5 py-5 text-sm leading-7 text-on-surface-variant">
+                  Съвет: уверете се, че качването е четливо и актуално. Това ще направи бъдещите клиентски заявки по-качествени и по-уверени.
+                </div>
 
-                      <label className="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-[1.5rem] border border-dashed border-outline-variant/40 bg-white/70 px-6 py-8 text-center transition-colors hover:border-primary hover:bg-white">
-                        <input
-                          type="file"
-                          accept="image/png,image/jpeg,image/webp"
-                          className="sr-only"
-                          onChange={handleIdentityChange}
-                        />
-                        <span
-                          aria-hidden="true"
-                          className="material-symbols-outlined text-4xl text-primary"
-                        >
-                          badge
-                        </span>
-                        <div>
-                          <p className="text-sm font-bold text-on-surface">
-                            {identityFile ? identityFile.name : "Качи документ"}
-                          </p>
-                          <p className="mt-1 text-[11px] text-on-surface-variant">
-                            PNG, JPG или WEBP до 10MB
-                          </p>
-                        </div>
-                      </label>
-                    </div>
-
-                    <div className="space-y-3 rounded-[1.8rem] bg-surface-container-low px-5 py-5">
-                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">
-                        02. Портфолио изображения
-                      </label>
-                      <label className="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-[1.5rem] border border-dashed border-outline-variant/40 bg-white/70 px-6 py-8 text-center transition-colors hover:border-primary hover:bg-white">
-                        <input
-                          type="file"
-                          accept="image/png,image/jpeg,image/webp"
-                          multiple
-                          className="sr-only"
-                          onChange={handlePortfolioChange}
-                        />
-                        <span
-                          aria-hidden="true"
-                          className="material-symbols-outlined text-4xl text-primary"
-                        >
-                          gallery_thumbnail
-                        </span>
-                        <div>
-                          <p className="text-sm font-bold text-on-surface">
-                            {portfolioFiles.length > 0
-                              ? `${portfolioFiles.length} файла избрани`
-                              : "Качи до 4 изображения"}
-                          </p>
-                          <p className="mt-1 text-[11px] text-on-surface-variant">
-                            Публични изображения за портфолиото ти
-                          </p>
-                        </div>
-                      </label>
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={!canSubmit || isSubmitting}
-                      className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary-container py-5 text-sm font-bold uppercase tracking-[0.18em] text-on-primary transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
-                    >
-                      <span
-                        aria-hidden="true"
-                        className="material-symbols-outlined text-xl"
-                      >
-                        verified_user
-                      </span>
-                      {isSubmitting
-                        ? "Завършваме проверката..."
-                        : "Изпрати за проверка"}
-                    </button>
-                  </form>
-                </>
-              )}
-            </EditorialPanel>
+                <div className="flex flex-col gap-3 sm:flex-row sm:justify-between">
+                  <Link
+                    href="/pro/dashboard"
+                    className="inline-flex items-center justify-center rounded-full bg-surface-container-low px-6 py-4 text-sm font-bold text-on-surface transition-colors hover:bg-white"
+                  >
+                    Назад
+                  </Link>
+                  <button
+                    type="submit"
+                    disabled={!canSubmit || isSubmitting}
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 text-sm font-black text-on-primary shadow-[0_18px_34px_rgba(85,62,96,0.2)] transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-70"
+                  >
+                    {isSubmitting ? "Проверяваме документите..." : "Продължи към портфолио"}
+                  </button>
+                </div>
+              </form>
+            )}
           </section>
         </div>
       </main>
@@ -557,3 +588,4 @@ export default function ProRegisterPage() {
     </div>
   );
 }
+
